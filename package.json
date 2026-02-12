@@ -1,0 +1,17 @@
+{
+  "name": "typed-korean",
+  "version": "0.0.1",
+  "description": "Type-level Korean grammar validation using TypeScript's type system",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "codegen": "tsx scripts/gen-jamo-table.ts",
+    "test": "vitest --typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0",
+    "vitest": "^3.0.0"
+  },
+  "license": "MIT"
+}
