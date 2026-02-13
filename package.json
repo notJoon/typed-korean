@@ -6,7 +6,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "codegen": "tsx scripts/gen-jamo-table.ts",
-    "test": "vitest --typecheck",
+    "test": "vitest --typecheck --passWithNoTests",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -15,7 +15,7 @@
     "prettier": "^3.8.1",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0",
-    "vitest": "^3.0.0"
+    "vitest": "3.2.4"
   },
   "license": "MIT"
 }
