@@ -7,7 +7,8 @@
     "typecheck": "tsc --noEmit",
     "codegen": "tsx scripts/gen-jamo-table.ts",
     "test": "vitest --typecheck",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/node": "^25.2.3",
