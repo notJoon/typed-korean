@@ -2,3 +2,8 @@ node_modules
 dist/
 *.tsbuildinfo
 .idea
+
+# gaji generated files
+generated/
+.gaji-cache.json
+.gaji.local.toml

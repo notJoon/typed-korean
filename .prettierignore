@@ -1,1 +1,2 @@
 src/generated/*.gen.ts
+generated/
