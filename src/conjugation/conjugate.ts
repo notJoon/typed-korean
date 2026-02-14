@@ -1,23 +1,18 @@
 import type { HasBatchim } from "../hangul-unicode/jamo.js";
-import type { IrregularVerb, Verb } from "../vocabulary/verb.js";
+import type { IrregularType, IrregularVerb, Verb } from "../vocabulary/verb.js";
 import type {
   ApplyContraction,
   ApplyPastContraction,
   InsertFinalJong,
 } from "./contraction.js";
-import type {
-  ConsonantStartingEnding,
-  EndingType,
-  VowelStartingEnding,
-} from "./ending-types.js";
+import type { EndingType, VowelStartingEnding } from "./ending-types.js";
 import type { 아어, 아어Vowel } from "./vowel-harmony.js";
 
 /**
  * Choose the effective stem (silhyo eogan, 실효 어간) based on ending class.
  *
  * For vowel-starting endings, irregular verbs switch to their `altStem`
- * (e.g. 덥 -> 더우). For consonant-starting endings, the base `stem` is
- * always used, even for irregular verbs.
+ * (e.g. 덥 -> 더우). For all other endings, the base `stem` is always used.
  *
  * @typeParam V - The verb type.
  * @typeParam F - The ending type being conjugated.
@@ -37,12 +32,10 @@ export type EffectiveStem<
   V extends Verb,
   F extends EndingType,
 > = F extends VowelStartingEnding
-  ? V extends IrregularVerb<any>
+  ? V extends IrregularVerb<IrregularType>
     ? V["altStem"]
     : V["stem"]
-  : F extends ConsonantStartingEnding
-    ? V["stem"]
-    : V["stem"];
+  : V["stem"];
 
 /**
  * Present-tense vowel base (e.g. "먹어", "가", "와").
@@ -108,12 +101,36 @@ type Conditional<Stem extends string> =
   HasBatchim<Stem> extends true ? `${Stem}으면` : `${Stem}면`;
 
 /**
+ * Conjugation rule table mapping each {@link EndingType} to its result.
+ *
+ * This mapped type replaces a deep conditional chain with a single object
+ * lookup, making it easy to add new endings and reducing the compiler's
+ * branching depth.
+ *
+ * @typeParam S - The effective stem, pre-computed once by {@link Conjugate}.
+ */
+type ConjugationMap<S extends string> = {
+  해요체: `${PresentVowelBase<S>}요`;
+  과거_평서: `${PastBase<S>}다`;
+  합쇼체: PoliteFormal<S>;
+  평서_현재: PlainPresent<S>;
+  고: `${S}고`;
+  아서: `${PresentVowelBase<S>}서`;
+  면: Conditional<S>;
+  지만: `${S}지만`;
+};
+
+/**
  * Conjugate a verb into a selected ending type.
  *
- * This is the main entry point of the conjugation engine. It combines
- * stem selection ({@link EffectiveStem}), vowel harmony ({@link 아어}),
- * contraction ({@link ApplyContraction}), and syllable recomposition
- * ({@link InsertFinalJong}) into a single type-level pipeline.
+ * This is the main entry point of the conjugation engine. It computes the
+ * effective stem once via `infer S`, then indexes into
+ * {@link ConjugationMap} to produce the result. This avoids redundant
+ * `EffectiveStem` evaluations and keeps the branching depth shallow.
+ *
+ * The pipeline combines stem selection ({@link EffectiveStem}), vowel
+ * harmony ({@link 아어}), contraction ({@link ApplyContraction}), and
+ * syllable recomposition ({@link InsertFinalJong}).
  *
  * @typeParam V - The verb to conjugate.
  * @typeParam F - The target ending type.
@@ -138,20 +155,9 @@ type Conditional<Stem extends string> =
  * type R9 = Conjugate<먹다, "면">;         // "먹으면" (으 epenthesis)
  * ```
  */
-export type Conjugate<V extends Verb, F extends EndingType> = F extends "해요체"
-  ? `${PresentVowelBase<EffectiveStem<V, F>>}요`
-  : F extends "과거_평서"
-    ? `${PastBase<EffectiveStem<V, F>>}다`
-    : F extends "합쇼체"
-      ? PoliteFormal<EffectiveStem<V, F>>
-      : F extends "평서_현재"
-        ? PlainPresent<EffectiveStem<V, F>>
-        : F extends "고"
-          ? `${EffectiveStem<V, F>}고`
-          : F extends "아서"
-            ? `${PresentVowelBase<EffectiveStem<V, F>>}서`
-            : F extends "면"
-              ? Conditional<EffectiveStem<V, F>>
-              : F extends "지만"
-                ? `${EffectiveStem<V, F>}지만`
-                : never;
+export type Conjugate<V extends Verb, F extends EndingType> =
+  EffectiveStem<V, F> extends infer S extends string
+    ? F extends keyof ConjugationMap<S>
+      ? ConjugationMap<S>[F]
+      : never
+    : never;

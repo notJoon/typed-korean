@@ -1,18 +1,25 @@
+// TODO: Consider replacing VowelStartingEnding / ConsonantStartingEnding with
+// a metadata-based EndingRule union so that each ending carries its own
+// classification (e.g. `{ kind: "해요체"; start: "vowel"; ... }`). This would
+// let EffectiveStem derive the stem-selection policy from the ending itself
+// (`EndingStart<F> extends "vowel"`) instead of relying on a separate
+// classification type that must be kept in sync manually.
+
 /**
  * Conjugation ending types (eomi yuhyeong, 어미 유형) supported in Phase 2.
  *
  * Each member represents a specific speech level or connective ending:
  *
- * | EndingType   | Description                             | Example          |
- * | ------------ | --------------------------------------- | ---------------- |
- * | "해요체"     | Polite informal (haeyoche)              | 먹어요, 가요     |
- * | "과거_평서"  | Past declarative plain (gwageo pyeongseo)| 먹었다, 봤다    |
- * | "합쇼체"     | Polite formal (hapsyoche)               | 먹습니다, 갑니다 |
- * | "평서_현재"  | Present declarative plain               | 먹는다, 간다     |
- * | "고"         | Conjunctive "and" (-go)                 | 먹고             |
+ * | EndingType   | Description                             | Example      |
+ * | ------------ | --------------------------------------- | ------------ |
+ * | "해요체"      | Polite informal (haeyoche)              | 먹어요, 가요     |
+ * | "과거_평서"  | Past declarative plain (gwageo pyeongseo)| 먹었다, 봤다     |
+ * | "합쇼체"     | Polite formal (hapsyoche)                | 먹습니다, 갑니다 |
+ * | "평서_현재"  | Present declarative plain                | 먹는다, 간다     |
+ * | "고"         | Conjunctive "and" (-go)                 | 먹고           |
  * | "아서"       | Causal/sequential (-aseo/-eoseo)        | 먹어서, 가서     |
- * | "면"         | Conditional "if" (-myeon)               | 먹으면, 가면     |
- * | "지만"       | Contrastive "but" (-jiman)              | 먹지만           |
+ * | "면"         | Conditional "if" (-myeon)               | 먹으면, 가면    |
+ * | "지만"       | Contrastive "but" (-jiman)              | 먹지만          |
  */
 export type EndingType =
   | "해요체"
