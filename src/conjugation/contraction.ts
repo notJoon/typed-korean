@@ -8,9 +8,10 @@ type ReplaceLastSyllableVowel<
   Stem extends string,
   NewVowel extends string,
   NewJong extends string | null = null,
-> = LastChar<Stem> extends keyof JamoTable
-  ? `${DropLast<Stem>}${Compose<JamoTable[LastCharInTable<Stem>]["초"], NewVowel, NewJong>}`
-  : never;
+> =
+  LastChar<Stem> extends keyof JamoTable
+    ? `${DropLast<Stem>}${Compose<JamoTable[LastCharInTable<Stem>]["초"], NewVowel, NewJong>}`
+    : never;
 
 /**
  * Contract stem-final vowel + ending vowel.
@@ -49,7 +50,10 @@ export type ApplyContraction<Stem extends string, EndingVowel extends string> =
 /**
  * Apply contraction and attach final consonant ㅆ for past tense open stems.
  */
-export type ApplyPastContraction<Stem extends string, EndingVowel extends string> =
+export type ApplyPastContraction<
+  Stem extends string,
+  EndingVowel extends string,
+> =
   Contract<JamoTable[LastCharInTable<Stem>]["중"], EndingVowel> extends {
     result: infer Result;
   }

@@ -27,8 +27,12 @@ type Equal<A, B> =
 type Expect<T extends true> = T;
 
 type _VerbShape = Expect<Equal<Verb["ending"], "다">>;
-type _RegularVerbNoIrregular = Expect<Equal<RegularVerb["irregularType"], undefined>>;
-type _IrregularType = Expect<Equal<IrregularType, "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "ㅡ" | "러">>;
+type _RegularVerbNoIrregular = Expect<
+  Equal<RegularVerb["irregularType"], undefined>
+>;
+type _IrregularType = Expect<
+  Equal<IrregularType, "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "ㅡ" | "러">
+>;
 type _IrregularVerb = Expect<Equal<IrregularVerb<"ㅂ">["irregularType"], "ㅂ">>;
 type _하다Verb = Expect<Equal<하다Verb["stem"], "하">>;
 

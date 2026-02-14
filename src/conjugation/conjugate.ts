@@ -17,34 +17,39 @@ import type { 아어, 아어Vowel } from "./vowel-harmony.js";
  *
  * Irregular verbs may switch to `altStem` for vowel-starting endings.
  */
-export type EffectiveStem<V extends Verb, F extends EndingType> =
-  F extends VowelStartingEnding
-    ? V extends IrregularVerb<any>
-      ? V["altStem"]
-      : V["stem"]
-    : F extends ConsonantStartingEnding
-      ? V["stem"]
-      : V["stem"];
+export type EffectiveStem<
+  V extends Verb,
+  F extends EndingType,
+> = F extends VowelStartingEnding
+  ? V extends IrregularVerb<any>
+    ? V["altStem"]
+    : V["stem"]
+  : F extends ConsonantStartingEnding
+    ? V["stem"]
+    : V["stem"];
 
-type PresentVowelBase<Stem extends string> = HasBatchim<Stem> extends true
-  ? `${Stem}${아어<Stem>}`
-  : ApplyContraction<Stem, 아어Vowel<Stem>>;
+type PresentVowelBase<Stem extends string> =
+  HasBatchim<Stem> extends true
+    ? `${Stem}${아어<Stem>}`
+    : ApplyContraction<Stem, 아어Vowel<Stem>>;
 
-type PastBase<Stem extends string> = HasBatchim<Stem> extends true
-  ? `${Stem}${아어Vowel<Stem> extends "ㅏ" ? "았" : "었"}`
-  : ApplyPastContraction<Stem, 아어Vowel<Stem>>;
+type PastBase<Stem extends string> =
+  HasBatchim<Stem> extends true
+    ? `${Stem}${아어Vowel<Stem> extends "ㅏ" ? "았" : "었"}`
+    : ApplyPastContraction<Stem, 아어Vowel<Stem>>;
 
-type PoliteFormal<Stem extends string> = HasBatchim<Stem> extends true
-  ? `${Stem}습니다`
-  : `${InsertFinalJong<Stem, "ㅂ">}니다`;
+type PoliteFormal<Stem extends string> =
+  HasBatchim<Stem> extends true
+    ? `${Stem}습니다`
+    : `${InsertFinalJong<Stem, "ㅂ">}니다`;
 
-type PlainPresent<Stem extends string> = HasBatchim<Stem> extends true
-  ? `${Stem}는다`
-  : `${InsertFinalJong<Stem, "ㄴ">}다`;
+type PlainPresent<Stem extends string> =
+  HasBatchim<Stem> extends true
+    ? `${Stem}는다`
+    : `${InsertFinalJong<Stem, "ㄴ">}다`;
 
-type Conditional<Stem extends string> = HasBatchim<Stem> extends true
-  ? `${Stem}으면`
-  : `${Stem}면`;
+type Conditional<Stem extends string> =
+  HasBatchim<Stem> extends true ? `${Stem}으면` : `${Stem}면`;
 
 /**
  * Conjugate a verb into a selected ending type.
