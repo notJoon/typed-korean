@@ -3,6 +3,7 @@ export type { JamoTable, OpenSyllable } from "./generated/jamo-table.gen.js";
 
 export type {
   Compose,
+  DecomposeLastChar,
   HasBatchim,
   LastJong,
   LastVowel,
@@ -46,6 +47,7 @@ export type { Conjugate, EffectiveStem } from "./conjugation/conjugate.js";
 export type {
   ApplyContraction,
   Contract,
+  ContractionTable,
   InsertFinalJong,
 } from "./conjugation/contraction.js";
 export type { 아어, 아어Vowel, 양성모음 } from "./conjugation/vowel-harmony.js";

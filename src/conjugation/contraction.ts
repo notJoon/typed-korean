@@ -1,8 +1,5 @@
-import type { JamoTable } from "../generated/jamo-table.gen.js";
-import type { Compose } from "../hangul-unicode/jamo.js";
-import type { DropLast, LastChar } from "../hangul-unicode/string-utils.js";
-
-type LastCharInTable<S extends string> = LastChar<S> & keyof JamoTable;
+import type { Compose, DecomposeLastChar } from "../hangul-unicode/jamo.js";
+import type { DropLast } from "../hangul-unicode/string-utils.js";
 
 /**
  * Replace the vowel (jungseong) of the last syllable in a stem while
@@ -30,47 +27,78 @@ type ReplaceLastSyllableVowel<
   NewVowel extends string,
   NewJong extends string | null = null,
 > =
-  LastChar<Stem> extends keyof JamoTable
-    ? `${DropLast<Stem>}${Compose<JamoTable[LastCharInTable<Stem>]["초"], NewVowel, NewJong>}`
+  DecomposeLastChar<Stem> extends infer D extends { 초: string }
+    ? `${DropLast<Stem>}${Compose<D["초"], NewVowel, NewJong>}`
     : never;
 
 /**
- * Vowel contraction rules (moeum chuknyak, 모음 축약).
+ * Vowel contraction rule table (moeum chuknyak, 모음 축약).
  *
- * When a stem-final vowel meets an ending-initial vowel, they contract into
- * a single vowel. The `type` field documents the linguistic category:
+ * Maps a `"StemVowel_EndingVowel"` key to the contracted result vowel.
+ * When a key is absent, no contraction applies and the ending is appended
+ * as-is.
  *
- * - `"merge"`: both vowels combine into a compound vowel or one absorbs
- *   the other (e.g. ㅗ + ㅏ -> ㅘ, ㅏ + ㅏ -> ㅏ).
- * - `"replace"`: the stem vowel is dropped and replaced by the contracted
- *   result (e.g. ㅡ + ㅓ -> ㅓ where ㅡ drops entirely).
- * - `"none"`: no contraction rule applies; the ending is appended as-is.
- *
- * | Stem vowel | Ending vowel | Result | Type    | Example           |
- * | ---------- | ------------ | ------ | ------- | ----------------- |
- * | ㅏ         | ㅏ           | ㅏ     | merge   | 가 + 아 -> 가     |
- * | ㅗ         | ㅏ           | ㅘ     | merge   | 오 + 아 -> 와     |
- * | ㅜ         | ㅓ           | ㅝ     | merge   | 주 + 어 -> 줘     |
- * | ㅡ         | ㅓ           | ㅓ     | replace | 쓰 + 어 -> 써     |
- * | ㅣ         | ㅓ           | ㅕ     | replace | 마시 + 어 -> 마셔 |
- * | ㅐ         | ㅓ           | ㅐ     | merge   | 보내 + 어 -> 보내 |
+ * | Key   | Result | Example         |
+ * | ----- | ------ | --------------- |
+ * | ㅏ_ㅏ  | ㅏ     | 가 + 아 -> 가     |
+ * | ㅗ_ㅏ  | ㅘ     | 오 + 아 -> 와     |
+ * | ㅜ_ㅓ  | ㅝ     | 주 + 어 -> 줘     |
+ * | ㅡ_ㅓ  | ㅓ     | 쓰 + 어 -> 써     |
+ * | ㅣ_ㅓ  | ㅕ     | 마시 + 어 -> 마셔  |
+ * | ㅐ_ㅓ  | ㅐ     | 보내 + 어 -> 보내  |
  */
-export type Contract<StemVowel extends string, EndingVowel extends string> = [
-  StemVowel,
-  EndingVowel,
-] extends ["ㅏ", "ㅏ"]
-  ? { result: "ㅏ"; type: "merge" }
-  : [StemVowel, EndingVowel] extends ["ㅗ", "ㅏ"]
-    ? { result: "ㅘ"; type: "merge" }
-    : [StemVowel, EndingVowel] extends ["ㅜ", "ㅓ"]
-      ? { result: "ㅝ"; type: "merge" }
-      : [StemVowel, EndingVowel] extends ["ㅡ", "ㅓ"]
-        ? { result: "ㅓ"; type: "replace" }
-        : [StemVowel, EndingVowel] extends ["ㅣ", "ㅓ"]
-          ? { result: "ㅕ"; type: "replace" }
-          : [StemVowel, EndingVowel] extends ["ㅐ", "ㅓ"]
-            ? { result: "ㅐ"; type: "merge" }
-            : { result: null; type: "none" };
+export type ContractionTable = {
+  ㅏ_ㅏ: "ㅏ";
+  ㅗ_ㅏ: "ㅘ";
+  ㅜ_ㅓ: "ㅝ";
+  ㅡ_ㅓ: "ㅓ";
+  ㅣ_ㅓ: "ㅕ";
+  ㅐ_ㅓ: "ㅐ";
+};
+
+/**
+ * Look up the contraction result for a stem vowel + ending vowel pair.
+ *
+ * Returns the contracted vowel if a rule exists in {@link ContractionTable},
+ * or `null` if no contraction applies.
+ *
+ * @example
+ * ```ts
+ * type R1 = Contract<"ㅗ", "ㅏ">;  // "ㅘ"
+ * type R2 = Contract<"ㅡ", "ㅓ">;  // "ㅓ"
+ * type R3 = Contract<"ㅔ", "ㅓ">;  // null (no rule)
+ * ```
+ */
+export type Contract<
+  StemVowel extends string,
+  EndingVowel extends string,
+> = `${StemVowel}_${EndingVowel}` extends keyof ContractionTable
+  ? ContractionTable[`${StemVowel}_${EndingVowel}`]
+  : null;
+
+/**
+ * Core contraction logic shared by present and past tense.
+ *
+ * Looks up the stem's last vowel, runs {@link Contract}, and recomposes
+ * the syllable. The `Jong` parameter controls whether a final consonant
+ * is inserted (past tense passes `"ㅆ"`, present passes `null`).
+ *
+ * @typeParam Stem - The verb stem (must end in an open syllable).
+ * @typeParam EndingVowel - The vowel jamo of the ending ("ㅏ" or "ㅓ").
+ * @typeParam Jong - Jongseong to insert, or `null` for present tense.
+ * @typeParam Fallback - What to return when no contraction rule applies.
+ */
+type ApplyContractionBase<
+  Stem extends string,
+  EndingVowel extends string,
+  Jong extends string | null,
+  Fallback extends string,
+> =
+  DecomposeLastChar<Stem> extends infer D extends { 중: string }
+    ? Contract<D["중"], EndingVowel> extends infer V extends string
+      ? ReplaceLastSyllableVowel<Stem, V, Jong>
+      : Fallback
+    : Fallback;
 
 /**
  * Apply vowel contraction to a stem and produce the contracted syllable(s).
@@ -92,22 +120,17 @@ export type Contract<StemVowel extends string, EndingVowel extends string> = [
  * type R3 = ApplyContraction<"쓰", "ㅓ">;  // "써" (ㅡ drop -> ㅓ)
  * ```
  */
-export type ApplyContraction<Stem extends string, EndingVowel extends string> =
-  Contract<JamoTable[LastCharInTable<Stem>]["중"], EndingVowel> extends {
-    result: infer Result;
-  }
-    ? Result extends string
-      ? ReplaceLastSyllableVowel<Stem, Result>
-      : `${Stem}${EndingVowel}`
-    : `${Stem}${EndingVowel}`;
+export type ApplyContraction<
+  Stem extends string,
+  EndingVowel extends string,
+> = ApplyContractionBase<Stem, EndingVowel, null, `${Stem}${EndingVowel}`>;
 
 /**
  * Apply vowel contraction for past tense, inserting jongseong ㅆ into the
  * contracted syllable.
  *
  * Works like {@link ApplyContraction} but passes `"ㅆ"` as the final
- * consonant to `ReplaceLastSyllableVowel`, producing the past-tense base
- * (e.g. "봤", "왔") in a single step.
+ * consonant, producing the past-tense base (e.g. "봤", "왔") in a single step.
  *
  * @typeParam Stem - The verb stem (must end in an open syllable).
  * @typeParam EndingVowel - The vowel jamo of the ending ("ㅏ" or "ㅓ").
@@ -122,14 +145,12 @@ export type ApplyContraction<Stem extends string, EndingVowel extends string> =
 export type ApplyPastContraction<
   Stem extends string,
   EndingVowel extends string,
-> =
-  Contract<JamoTable[LastCharInTable<Stem>]["중"], EndingVowel> extends {
-    result: infer Result;
-  }
-    ? Result extends string
-      ? ReplaceLastSyllableVowel<Stem, Result, "ㅆ">
-      : `${Stem}${EndingVowel extends "ㅏ" ? "았" : "었"}`
-    : `${Stem}${EndingVowel extends "ㅏ" ? "았" : "었"}`;
+> = ApplyContractionBase<
+  Stem,
+  EndingVowel,
+  "ㅆ",
+  `${Stem}${EndingVowel extends "ㅏ" ? "았" : "었"}`
+>;
 
 /**
  * Insert a jongseong (final consonant) into the last open syllable of a stem.
@@ -147,10 +168,6 @@ export type ApplyPastContraction<
  * ```
  */
 export type InsertFinalJong<Stem extends string, Jong extends string> =
-  LastChar<Stem> extends keyof JamoTable
-    ? `${DropLast<Stem>}${Compose<
-        JamoTable[LastCharInTable<Stem>]["초"],
-        JamoTable[LastCharInTable<Stem>]["중"],
-        Jong
-      >}`
+  DecomposeLastChar<Stem> extends infer D extends { 초: string; 중: string }
+    ? `${DropLast<Stem>}${Compose<D["초"], D["중"], Jong>}`
     : never;
