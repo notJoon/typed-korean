@@ -50,6 +50,11 @@ Example expectations:
 - `LastVowel<"먹">` -> `"ㅓ"`
 - `Compose<"ㅇ", "ㅘ", null>` -> `"와"`
 
+## Known Issues
+
+- Non-Hangul literals such as `HasBatchim<"A">` may currently evaluate to `true`.
+- To keep type footprint and compile cost lower, this project intentionally does not generate an exhaustive closed-syllable union (10,773 entries).
+
 ## Runtime Helpers (Test-Only)
 
 `src/hangul-unicode/runtime.ts` contains runtime equivalents for unit testing:

@@ -1,5 +1,7 @@
 /**
  * Codegen script for Hangul syllable decomposition/composition tables.
+ * 
+ * To generate, run `npm run codegen`.
  *
  * Generates:
  *   - `src/generated/jamo-table.gen.ts`   — OpenSyllable (union of all syllables
@@ -137,7 +139,13 @@ function decompose(code: number) {
 
 /** Decompose a character (by string) into jamo. */
 function decomposeChar(ch: string) {
+  if ([...ch].length !== 1) {
+    throw new Error(`Expected a single character, got: ${ch}`);
+  }
   const code = ch.codePointAt(0)!;
+  if (code < S_BASE || code > 0xd7a3) {
+    throw new Error(`Not a Hangul syllable: ${ch}`);
+  }
   return decompose(code);
 }
 
@@ -322,6 +330,9 @@ function genComposeTable(keys: Set<string>): string {
     const choIdx = CHOSEONG.indexOf(cho);
     const jungIdx = JUNGSEONG.indexOf(jung);
     const jongIdx = jong === null ? 0 : JONGSEONG.indexOf(jong);
+    if (choIdx < 0 || jungIdx < 0 || jongIdx < 0) {
+      throw new Error(`Invalid compose key: ${key}`);
+    }
     const code = composeSyllable(choIdx, jungIdx, jongIdx);
     entries.push({ key, char: String.fromCharCode(code) });
   }

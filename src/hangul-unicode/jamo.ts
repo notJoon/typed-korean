@@ -19,7 +19,11 @@ type ComposeKey<
  * Returns:
  * - `true`  if the last syllable is closed (has jongseong)
  * - `false` if the last syllable is open (no jongseong)
- * - `never` for broad `string` inputs (literal gate)
+ *
+ * Known issue:
+ * - Non-Hangul literals (e.g. "A") currently evaluate to `true`.
+ *   This module intentionally avoids generating an exhaustive closed-syllable
+ *   union (10,773 entries) to keep type footprint smaller.
  *
  * @example
  * type A = HasBatchim<"밥">;   // true

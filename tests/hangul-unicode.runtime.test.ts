@@ -26,10 +26,12 @@ describe("hangul-unicode runtime", () => {
   it("checks syllable range", () => {
     expect(isHangulSyllable("가")).toBe(true);
     expect(isHangulSyllable("A")).toBe(false);
+    expect(isHangulSyllable("가A")).toBe(false);
   });
 
   it("throws on invalid inputs", () => {
     expect(() => decomposeSyllable("A")).toThrow();
+    expect(() => decomposeSyllable("가A")).toThrow();
     expect(() => hasBatchim("")).toThrow();
   });
 });

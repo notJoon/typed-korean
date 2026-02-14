@@ -97,8 +97,12 @@ export type DecomposedSyllable = {
   종: Jong;
 };
 
+function isSingleCharacter(ch: string): boolean {
+  return [...ch].length === 1;
+}
+
 export function isHangulSyllable(ch: string): boolean {
-  if (ch.length === 0) return false;
+  if (!isSingleCharacter(ch)) return false;
   const code = ch.codePointAt(0);
   if (code === undefined) return false;
   return code >= S_BASE && code <= 0xd7a3;
