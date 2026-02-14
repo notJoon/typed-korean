@@ -36,7 +36,12 @@ const setupNode = getAction("actions/setup-node@v4");
 
 const job = new Job("ubuntu-latest")
   .addStep(checkout({ name: "Checkout" }))
-  .addStep(setupNode({ name: "Setup Node", with: { "node-version": "22", cache: "npm" } }))
+  .addStep(
+    setupNode({
+      name: "Setup Node",
+      with: { "node-version": "22", cache: "npm" },
+    }),
+  )
   .addStep({ name: "Install", run: "npm ci" });
 
 const workflow = new Workflow({

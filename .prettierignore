@@ -1,2 +1,3 @@
 src/generated/*.gen.ts
 generated/
+.github/workflows/
