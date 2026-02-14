@@ -36,3 +36,12 @@ export type {
   잡다,
   주다,
 } from "./vocabulary/entries.js";
+
+export type {
+  ConsonantStartingEnding,
+  EndingType,
+  VowelStartingEnding,
+} from "./conjugation/ending-types.js";
+export type { Conjugate, EffectiveStem } from "./conjugation/conjugate.js";
+export type { ApplyContraction, Contract, InsertFinalJong } from "./conjugation/contraction.js";
+export type { 아어, 아어Vowel, 양성모음 } from "./conjugation/vowel-harmony.js";
