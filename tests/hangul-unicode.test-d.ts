@@ -6,12 +6,7 @@ import type {
   SecondToLastVowel,
 } from "../src/hangul-unicode/jamo.js";
 import type { DropLast, LastChar } from "../src/hangul-unicode/string-utils.js";
-
-type Equal<A, B> =
-  (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2
-    ? true
-    : false;
-type Expect<T extends true> = T;
+import type { Equal, Expect } from "./test-utils.js";
 
 type _HasBatchim1 = Expect<Equal<HasBatchim<"밥">, true>>;
 type _HasBatchim2 = Expect<Equal<HasBatchim<"사과">, false>>;

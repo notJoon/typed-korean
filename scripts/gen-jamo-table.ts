@@ -1,6 +1,6 @@
 /**
  * Codegen script for Hangul syllable decomposition/composition tables.
- * 
+ *
  * To generate, run `npm run codegen`.
  *
  * Generates:
