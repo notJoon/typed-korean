@@ -8,12 +8,7 @@ import type {
   주다,
 } from "../src/vocabulary/entries.js";
 import type { Conjugate } from "../src/conjugation/conjugate.js";
-
-type Equal<A, B> =
-  (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2
-    ? true
-    : false;
-type Expect<T extends true> = T;
+import type { Equal, Expect } from "./test-utils.js";
 
 type _해요체1 = Expect<Equal<Conjugate<먹다, "해요체">, "먹어요">>;
 type _해요체2 = Expect<Equal<Conjugate<가다, "해요체">, "가요">>;

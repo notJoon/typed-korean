@@ -19,12 +19,7 @@ import type {
   Verb,
   하다Verb,
 } from "../src/vocabulary/verb.js";
-
-type Equal<A, B> =
-  (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2
-    ? true
-    : false;
-type Expect<T extends true> = T;
+import type { Equal, Expect } from "./test-utils.js";
 
 type _VerbShape = Expect<Equal<Verb["ending"], "다">>;
 type _RegularVerbNoIrregular = Expect<
