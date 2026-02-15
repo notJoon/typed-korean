@@ -2,7 +2,22 @@ import type { ComposeTable } from "../generated/compose-table.gen.js";
 import type { JamoTable, OpenSyllable } from "../generated/jamo-table.gen.js";
 import type { DropLast, IfLiteral, LastChar } from "./string-utils.js";
 
-type LastCharInJamo<S extends string> = LastChar<S> & keyof JamoTable;
+/**
+ * Decompose the last character of a string into its jamo components
+ * (choseong, jungseong, jongseong) via `JamoTable` lookup.
+ *
+ * Returns `never` if the last character is not in `JamoTable`.
+ *
+ * @example
+ * ```ts
+ * type R1 = DecomposeLastChar<"먹">;  // { 초: "ㅁ"; 중: "ㅓ"; 종: "ㄱ" }
+ * type R2 = DecomposeLastChar<"가">;  // { 초: "ㄱ"; 중: "ㅏ"; 종: null }
+ * ```
+ */
+export type DecomposeLastChar<S extends string> =
+  LastChar<S> extends keyof JamoTable
+    ? JamoTable[LastChar<S> & keyof JamoTable]
+    : never;
 
 type ComposeKey<
   Cho extends string,
@@ -49,9 +64,7 @@ export type HasBatchim<S extends string> = IfLiteral<
  */
 export type LastVowel<S extends string> = IfLiteral<
   S,
-  LastChar<S> extends keyof JamoTable
-    ? JamoTable[LastCharInJamo<S>]["중"]
-    : never,
+  DecomposeLastChar<S> extends infer D extends { 중: string } ? D["중"] : never,
   never
 >;
 
@@ -68,8 +81,8 @@ export type LastVowel<S extends string> = IfLiteral<
  */
 export type LastJong<S extends string> = IfLiteral<
   S,
-  LastChar<S> extends keyof JamoTable
-    ? JamoTable[LastCharInJamo<S>]["종"]
+  DecomposeLastChar<S> extends infer D extends { 종: string | null }
+    ? D["종"]
     : never,
   never
 >;
