@@ -26,16 +26,30 @@ export type { Adjective } from "./vocabulary/adjective.js";
 export type { Noun, ProperNoun } from "./vocabulary/noun.js";
 export type {
   RegularVerbEntry,
+  가깝다,
   가다,
+  걷다,
+  공부하다,
+  그렇다,
+  낫다,
+  덥다,
+  듣다,
+  모르다,
   마시다,
   먹다,
   보다,
+  빠르다,
   살다,
   쓰다,
+  아름답다,
+  어떻다,
   오다,
   읽다,
   잡다,
   주다,
+  짓다,
+  춥다,
+  운동하다,
 } from "./vocabulary/entries.js";
 
 export type {
@@ -50,4 +64,9 @@ export type {
   ContractionTable,
   InsertFinalJong,
 } from "./conjugation/contraction.js";
-export type { 아어, 아어Vowel, 양성모음 } from "./conjugation/vowel-harmony.js";
+export type {
+  르아어Vowel,
+  아어,
+  아어Vowel,
+  양성모음,
+} from "./conjugation/vowel-harmony.js";

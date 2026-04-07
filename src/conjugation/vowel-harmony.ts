@@ -1,4 +1,4 @@
-import type { LastVowel } from "../hangul-unicode/jamo.js";
+import type { LastVowel, SecondToLastVowel } from "../hangul-unicode/jamo.js";
 
 /**
  * Bright vowels (yangseong moeum, 양성모음).
@@ -47,3 +47,21 @@ export type 아어Vowel<Stem extends string> =
  */
 export type 아어<Stem extends string> =
   아어Vowel<Stem> extends "ㅏ" ? "아" : "어";
+
+/**
+ * Determine the connective vowel for 르 irregular verbs: "ㅏ" or "ㅓ".
+ *
+ * 르 irregular vowel harmony is based on the second-to-last vowel of the
+ * original stem (e.g. "모르" -> inspect "모"), not on the transformed
+ * alt stem (e.g. "몰").
+ *
+ * @typeParam Stem - The original 르 stem.
+ *
+ * @example
+ * ```ts
+ * type R1 = 르아어Vowel<"모르">; // "ㅏ" (ㅗ is bright)
+ * type R2 = 르아어Vowel<"기르">; // "ㅓ" (ㅣ is not bright)
+ * ```
+ */
+export type 르아어Vowel<Stem extends string> =
+  SecondToLastVowel<Stem> extends 양성모음 ? "ㅏ" : "ㅓ";

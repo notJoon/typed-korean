@@ -1,4 +1,5 @@
-import type { RegularVerb } from "./verb.js";
+import type { Adjective } from "./adjective.js";
+import type { IrregularVerb, RegularVerb, 하다Verb } from "./verb.js";
 
 /**
  * Regular verb entries for Phase 2.
@@ -45,3 +46,38 @@ export type RegularVerbEntry =
   | 마시다
   | 읽다
   | 잡다;
+
+// ㅂ irregular verbs
+export type 덥다 = IrregularVerb<"ㅂ"> & { stem: "덥"; altStem: "더우" };
+export type 춥다 = IrregularVerb<"ㅂ"> & { stem: "춥"; altStem: "추우" };
+export type 아름답다 = IrregularVerb<"ㅂ"> & {
+  stem: "아름답";
+  altStem: "아름다우";
+};
+
+// ㄷ irregular verbs
+export type 듣다 = IrregularVerb<"ㄷ"> & { stem: "듣"; altStem: "들" };
+export type 걷다 = IrregularVerb<"ㄷ"> & { stem: "걷"; altStem: "걸" };
+
+// ㅅ irregular verbs
+export type 짓다 = IrregularVerb<"ㅅ"> & { stem: "짓"; altStem: "지" };
+export type 낫다 = IrregularVerb<"ㅅ"> & { stem: "낫"; altStem: "나" };
+
+// 르 irregular verbs
+export type 모르다 = IrregularVerb<"르"> & { stem: "모르"; altStem: "몰" };
+export type 빠르다 = IrregularVerb<"르"> & { stem: "빠르"; altStem: "빨" };
+
+// ㅎ irregular verbs
+export type 그렇다 = IrregularVerb<"ㅎ"> & { stem: "그렇"; altStem: "그래" };
+export type 어떻다 = IrregularVerb<"ㅎ"> & { stem: "어떻"; altStem: "어때" };
+
+// 하다-family verbs
+export type 공부하다 = 하다Verb & { prefix: "공부" };
+export type 운동하다 = 하다Verb & { prefix: "운동" };
+
+// Irregular adjective sample (ㅂ irregular)
+export type 가깝다 = Adjective &
+  IrregularVerb<"ㅂ"> & {
+    stem: "가깝";
+    altStem: "가까우";
+  };

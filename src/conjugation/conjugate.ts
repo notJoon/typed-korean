@@ -1,12 +1,17 @@
-import type { HasBatchim } from "../hangul-unicode/jamo.js";
+import type { Compose, HasBatchim } from "../hangul-unicode/jamo.js";
 import type { IrregularType, IrregularVerb, Verb } from "../vocabulary/verb.js";
+import type { 하다Verb } from "../vocabulary/verb.js";
 import type {
   ApplyContraction,
   ApplyPastContraction,
   InsertFinalJong,
 } from "./contraction.js";
-import type { EndingType, VowelStartingEnding } from "./ending-types.js";
-import type { 아어, 아어Vowel } from "./vowel-harmony.js";
+import type {
+  ConsonantStartingEnding,
+  EndingType,
+  VowelStartingEnding,
+} from "./ending-types.js";
+import type { 르아어Vowel, 아어, 아어Vowel } from "./vowel-harmony.js";
 
 /**
  * Choose the effective stem (silhyo eogan, 실효 어간) based on ending class.
@@ -35,7 +40,9 @@ export type EffectiveStem<
   ? V extends IrregularVerb<IrregularType>
     ? V["altStem"]
     : V["stem"]
-  : V["stem"];
+  : F extends ConsonantStartingEnding
+    ? V["stem"]
+    : never;
 
 /**
  * Present-tense vowel base (e.g. "먹어", "가", "와").
@@ -45,10 +52,12 @@ export type EffectiveStem<
  * - Open stem (no batchim): apply vowel contraction.
  *   "가" + "ㅏ" -> "가", "오" + "ㅏ" -> "와"
  */
-type PresentVowelBase<Stem extends string> =
-  HasBatchim<Stem> extends true
+type PresentVowelBase<V extends Verb, Stem extends string> =
+  V extends IrregularVerb<"ㅅ">
     ? `${Stem}${아어<Stem>}`
-    : ApplyContraction<Stem, 아어Vowel<Stem>>;
+    : HasBatchim<Stem> extends true
+      ? `${Stem}${아어<Stem>}`
+      : ApplyContraction<Stem, 아어Vowel<Stem>>;
 
 /**
  * Past-tense base (e.g. "먹었", "봤", "왔").
@@ -58,10 +67,12 @@ type PresentVowelBase<Stem extends string> =
  * - Open stem: apply contraction with ㅆ insertion.
  *   "보" + ㅏ + ㅆ -> "봤"
  */
-type PastBase<Stem extends string> =
-  HasBatchim<Stem> extends true
+type PastBase<V extends Verb, Stem extends string> =
+  V extends IrregularVerb<"ㅅ">
     ? `${Stem}${아어Vowel<Stem> extends "ㅏ" ? "았" : "었"}`
-    : ApplyPastContraction<Stem, 아어Vowel<Stem>>;
+    : HasBatchim<Stem> extends true
+      ? `${Stem}${아어Vowel<Stem> extends "ㅏ" ? "았" : "었"}`
+      : ApplyPastContraction<Stem, 아어Vowel<Stem>>;
 
 /**
  * Polite formal ending, hapsyoche (합쇼체): "습니다" / "ㅂ니다".
@@ -101,6 +112,48 @@ type Conditional<Stem extends string> =
   HasBatchim<Stem> extends true ? `${Stem}으면` : `${Stem}면`;
 
 /**
+ * Conjugation rule table for 하다 verbs.
+ *
+ * 하다 uses "여" as the connective and contracts to "해". Since 하다 verbs
+ * are prefix + 하다 compounds (e.g. 공부 + 하다), the prefix is prepended to
+ * every conjugated form.
+ */
+type 하다ConjugationMap<Prefix extends string> = {
+  해요체: `${Prefix}해요`;
+  과거_평서: `${Prefix}했다`;
+  합쇼체: `${Prefix}합니다`;
+  평서_현재: `${Prefix}한다`;
+  고: `${Prefix}하고`;
+  아서: `${Prefix}해서`;
+  면: `${Prefix}하면`;
+  지만: `${Prefix}하지만`;
+};
+
+/**
+ * Present-tense vowel base for 르 irregular verbs.
+ *
+ * 르 irregular verbs use "라/러" rather than "아/어". The choice between
+ * "라" and "러" is decided by vowel harmony on the original stem.
+ */
+type 르PresentVowelBase<
+  OrigStem extends string,
+  AltStem extends string,
+> = `${AltStem}${Compose<"ㄹ", 르아어Vowel<OrigStem>, null>}`;
+
+/** Past-tense base for 르 irregular verbs. */
+type 르PastBase<
+  OrigStem extends string,
+  AltStem extends string,
+> = `${AltStem}${Compose<"ㄹ", 르아어Vowel<OrigStem>, "ㅆ">}`;
+
+/** Vowel-starting endings for 르 irregular verbs. */
+type 르VowelConjugationMap<OrigStem extends string, AltStem extends string> = {
+  해요체: `${르PresentVowelBase<OrigStem, AltStem>}요`;
+  과거_평서: `${르PastBase<OrigStem, AltStem>}다`;
+  아서: `${르PresentVowelBase<OrigStem, AltStem>}서`;
+};
+
+/**
  * Conjugation rule table mapping each {@link EndingType} to its result.
  *
  * This mapped type replaces a deep conditional chain with a single object
@@ -109,13 +162,13 @@ type Conditional<Stem extends string> =
  *
  * @typeParam S - The effective stem, pre-computed once by {@link Conjugate}.
  */
-type ConjugationMap<S extends string> = {
-  해요체: `${PresentVowelBase<S>}요`;
-  과거_평서: `${PastBase<S>}다`;
+type ConjugationMap<V extends Verb, S extends string> = {
+  해요체: `${PresentVowelBase<V, S>}요`;
+  과거_평서: `${PastBase<V, S>}다`;
   합쇼체: PoliteFormal<S>;
   평서_현재: PlainPresent<S>;
   고: `${S}고`;
-  아서: `${PresentVowelBase<S>}서`;
+  아서: `${PresentVowelBase<V, S>}서`;
   면: Conditional<S>;
   지만: `${S}지만`;
 };
@@ -155,9 +208,18 @@ type ConjugationMap<S extends string> = {
  * type R9 = Conjugate<먹다, "면">;         // "먹으면" (으 epenthesis)
  * ```
  */
-export type Conjugate<V extends Verb, F extends EndingType> =
-  EffectiveStem<V, F> extends infer S extends string
-    ? F extends keyof ConjugationMap<S>
-      ? ConjugationMap<S>[F]
-      : never
-    : never;
+export type Conjugate<V extends Verb, F extends EndingType> = V extends 하다Verb
+  ? F extends keyof 하다ConjugationMap<V["prefix"]>
+    ? 하다ConjugationMap<V["prefix"]>[F]
+    : never
+  : V extends IrregularVerb<"르">
+    ? F extends VowelStartingEnding
+      ? F extends keyof 르VowelConjugationMap<V["stem"], V["altStem"]>
+        ? 르VowelConjugationMap<V["stem"], V["altStem"]>[F]
+        : never
+      : ConjugationMap<V, V["stem"]>[F & keyof ConjugationMap<V, V["stem"]>]
+    : EffectiveStem<V, F> extends infer S extends string
+      ? F extends keyof ConjugationMap<V, S>
+        ? ConjugationMap<V, S>[F]
+        : never
+      : never;
