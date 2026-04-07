@@ -158,7 +158,6 @@ const CONTRACTION_TABLE: Record<string, string> = {
   ㅐ_ㅓ: "ㅐ", // 보내 + 어 → 보내
   ㅏ_ㅕ: "ㅐ", // 하 + 여 → 해
   ㅓ_ㅓ: "ㅓ", // 서 + 어 → 서
-  ㅔ_ㅓ: "ㅔ", // ㅎ 불규칙 altStem 처리
 };
 
 /**
@@ -219,7 +218,7 @@ function collectNeededKeys(): Set<string> {
       add(cho, jung, "ㄹ");
     }
 
-    // 하다 special: 하 + 여 → 해
+    // 하다 special: 하 + 여 -> 해
     if (irregType === "하") {
       const { cho } = decomposeChar("하");
       add(cho, "ㅐ", null); // 해
@@ -227,6 +226,15 @@ function collectNeededKeys(): Set<string> {
       add(cho, "ㅏ", "ㅂ"); // 합 (합쇼체)
       add(cho, "ㅏ", "ㄴ"); // 한 (평서)
       add(cho, "ㅏ", "ㄹ"); // 할 (관형)
+    }
+
+    // 르 irregular: altStem + 라/러 and + 랐/렀
+    if (irregType === "르" && stem.length >= 2) {
+      const secondToLastChar = stem.at(-2)!;
+      const { jung } = decomposeChar(secondToLastChar);
+      const connVowel = YANGSEONG.has(jung) ? "ㅏ" : "ㅓ";
+      add("ㄹ", connVowel, null);
+      add("ㄹ", connVowel, "ㅆ");
     }
   }
 
