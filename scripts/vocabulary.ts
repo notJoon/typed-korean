@@ -34,6 +34,8 @@ export const VERBS: readonly VocabEntry[] = [
   ["뜨", null],
   ["마시", null],
   ["살", null],
+  ["알", null],
+  ["만들", null],
   ["읽", null],
   ["잡", null],
 

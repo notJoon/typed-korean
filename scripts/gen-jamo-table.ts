@@ -228,6 +228,31 @@ function collectNeededKeys(): Set<string> {
       add(cho, "ㅏ", "ㄹ"); // 할 (관형)
     }
 
+    // Base stem consonant-ending keys (합쇼체, 평서_현재)
+    // Needed for stems whose base form is open-syllable but not in stemsForVowelEnding
+    // (e.g. 르 irregular base stems: "모르", "빠르")
+    {
+      const baseLast = stem.at(-1)!;
+      const bd = decomposeChar(baseLast);
+      if (bd.jong === null) {
+        add(bd.cho, bd.jung, "ㅂ");
+        add(bd.cho, bd.jung, "ㄴ");
+        add(bd.cho, bd.jung, "ㄹ");
+      }
+      // ㄹ 탈락: replace ㄹ with ㄴ/ㅂ for 평서_현재/합쇼체
+      if (bd.jong === "ㄹ") {
+        add(bd.cho, bd.jung, "ㄴ");
+        add(bd.cho, bd.jung, "ㅂ");
+      }
+    }
+
+    // ㅎ irregular: drop ㅎ for -(으)면 conditional
+    if (irregType === "ㅎ") {
+      const lastCh = stem.at(-1)!;
+      const { cho, jung } = decomposeChar(lastCh);
+      add(cho, jung, null); // ㅎ drop → open syllable (러, 떠)
+    }
+
     // 르 irregular: altStem + 라/러 and + 랐/렀
     if (irregType === "르" && stem.length >= 2) {
       const secondToLastChar = stem.at(-2)!;
