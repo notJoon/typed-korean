@@ -120,7 +120,7 @@
 
 ## Phase 3: 불규칙 동사 및 하다 동사 (`vocabulary`, `conjugation`)
 
-- [ ] **3.1** `src/vocabulary/entries.ts` 확장 — 불규칙 동사 어휘 선언
+- [x] **3.1** `src/vocabulary/entries.ts` 확장 — 불규칙 동사 어휘 선언
   - ㅂ 불규칙: 덥다, 춥다, 아름답다
   - ㄷ 불규칙: 듣다, 걷다
   - ㅅ 불규칙: 짓다, 낫다
@@ -128,16 +128,16 @@
   - ㅎ 불규칙: 그렇다, 어떻다
   - 하다 동사: 공부하다, 운동하다
   - 불규칙 형용사: 가깝다
-- [ ] **3.2** `src/conjugation/conjugate.ts` 확장 — 불규칙 활용 처리
+- [x] **3.2** `src/conjugation/conjugate.ts` 확장 — 불규칙 활용 처리
   - `EffectiveStem`이 모음 어미에서 `altStem`을 반환하도록 구현
   - 불규칙 어간(`altStem`)에도 모음조화/축약이 정상 적용되는지 확인
-- [ ] **3.3** `src/conjugation/conjugate.ts` 확장 — 르 불규칙 특수 처리
+- [x] **3.3** `src/conjugation/conjugate.ts` 확장 — 르 불규칙 특수 처리
   - `르아어<Stem>`: 끝에서 두 번째 음절 모음으로 모음조화 판단
   - altStem(예: "몰") + "라"/"러" 결합
-- [ ] **3.4** `src/conjugation/conjugate.ts` 확장 — 하다 동사 특수 활용
+- [x] **3.4** `src/conjugation/conjugate.ts` 확장 — 하다 동사 특수 활용
   - 모음 어미: "하" + "여" → "해" 축약 (prefix + "해요", prefix + "했다" 등)
   - 자음 어미: prefix + "하고", prefix + "하지만" 등 정상 결합
-- [ ] **3.5** Phase 3 타입 테스트 작성
+- [x] **3.5** Phase 3 타입 테스트 작성
   - ㅂ 불규칙: `Conjugate<덥다, "해요체">` → `"더워요"`
   - ㄷ 불규칙: `Conjugate<듣다, "과거_평서">` → `"들었다"`
   - ㅅ 불규칙: `Conjugate<짓다, "해요체">` → `"지어요"`
@@ -193,7 +193,7 @@
   - `tsc --noEmit --extendedDiagnostics`로 check time, memory 측정
   - 동사 10개 × 활용형 5개 = 50개 타입 평가 기준
   - 문장 10개 조립 기준
-- [ ] **5.4** 공개 API 정리 및 `src/index.ts` 작성
+- [x] **5.4** 공개 API 정리 및 `src/index.ts` 작성
   - 최종 export 구조 정리
-- [ ] **5.5** README.md 작성
+- [x] **5.5** README.md 작성
   - 프로젝트 소개, 사용 예시, 설치/빌드 방법
