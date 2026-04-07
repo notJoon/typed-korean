@@ -1,4 +1,5 @@
 import type { Compose, HasBatchim } from "../hangul-unicode/jamo.js";
+import type { Adjective } from "../vocabulary/adjective.js";
 import type { IrregularType, IrregularVerb, Verb } from "../vocabulary/verb.js";
 import type { 하다Verb } from "../vocabulary/verb.js";
 import type {
@@ -166,7 +167,7 @@ type ConjugationMap<V extends Verb, S extends string> = {
   해요체: `${PresentVowelBase<V, S>}요`;
   과거_평서: `${PastBase<V, S>}다`;
   합쇼체: PoliteFormal<S>;
-  평서_현재: PlainPresent<S>;
+  평서_현재: V extends Adjective ? `${V["stem"]}다` : PlainPresent<S>;
   고: `${S}고`;
   아서: `${PresentVowelBase<V, S>}서`;
   면: Conditional<S>;

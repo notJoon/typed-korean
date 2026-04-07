@@ -48,7 +48,8 @@ export type RegularVerbEntry =
   | 잡다;
 
 // ㅂ irregular verbs
-export type 덥다 = IrregularVerb<"ㅂ"> & { stem: "덥"; altStem: "더우" };
+export type 덥다 = Adjective &
+  IrregularVerb<"ㅂ"> & { stem: "덥"; altStem: "더우" };
 export type 춥다 = IrregularVerb<"ㅂ"> & { stem: "춥"; altStem: "추우" };
 export type 아름답다 = IrregularVerb<"ㅂ"> & {
   stem: "아름답";
