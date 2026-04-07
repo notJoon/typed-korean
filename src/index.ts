@@ -4,6 +4,7 @@ export type { JamoTable, OpenSyllable } from "./generated/jamo-table.gen.js";
 export type {
   Compose,
   DecomposeLastChar,
+  DropFinalJong,
   HasBatchim,
   LastJong,
   LastVowel,
@@ -40,6 +41,8 @@ export type {
   보다,
   빠르다,
   살다,
+  알다,
+  만들다,
   쓰다,
   아름답다,
   어떻다,

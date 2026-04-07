@@ -104,6 +104,21 @@ export type SecondToLastVowel<S extends string> = IfLiteral<
 >;
 
 /**
+ * Remove the jongseong (final consonant) of the last syllable in `S`,
+ * producing an open syllable.
+ *
+ * Used for ㅎ irregular conditional (ㅎ drop) and ㄹ탈락 processing.
+ *
+ * @example
+ * type A = DropFinalJong<"그렇">; // "그러" (ㅎ removed)
+ * type B = DropFinalJong<"살">;   // "사"  (ㄹ removed)
+ */
+export type DropFinalJong<S extends string> =
+  DecomposeLastChar<S> extends infer D extends { 초: string; 중: string }
+    ? `${DropLast<S>}${Compose<D["초"], D["중"], null>}`
+    : never;
+
+/**
  * Compose a Hangul syllable from compatibility jamo.
  *
  * This is a type-level lookup into generated `ComposeTable`.

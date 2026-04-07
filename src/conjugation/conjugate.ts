@@ -1,4 +1,9 @@
-import type { Compose, HasBatchim } from "../hangul-unicode/jamo.js";
+import type {
+  Compose,
+  DropFinalJong,
+  HasBatchim,
+  LastJong,
+} from "../hangul-unicode/jamo.js";
 import type { Adjective } from "../vocabulary/adjective.js";
 import type { IrregularType, IrregularVerb, Verb } from "../vocabulary/verb.js";
 import type { 하다Verb } from "../vocabulary/verb.js";
@@ -78,6 +83,8 @@ type PastBase<V extends Verb, Stem extends string> =
 /**
  * Polite formal ending, hapsyoche (합쇼체): "습니다" / "ㅂ니다".
  *
+ * - ㄹ-final stem: ㄹ drops, ㅂ replaces it.
+ *   "살" -> "삽니다" (ㄹ탈락)
  * - Closed stem: append "습니다".
  *   "먹" -> "먹습니다"
  * - Open stem: insert ㅂ as jongseong, then append "니다".
@@ -85,12 +92,16 @@ type PastBase<V extends Verb, Stem extends string> =
  */
 type PoliteFormal<Stem extends string> =
   HasBatchim<Stem> extends true
-    ? `${Stem}습니다`
+    ? LastJong<Stem> extends "ㄹ"
+      ? `${InsertFinalJong<Stem, "ㅂ">}니다`
+      : `${Stem}습니다`
     : `${InsertFinalJong<Stem, "ㅂ">}니다`;
 
 /**
  * Plain present declarative (pyeongseo hyeonjae, 평서 현재): "는다" / "ㄴ다".
  *
+ * - ㄹ-final stem: ㄹ drops, ㄴ replaces it.
+ *   "살" -> "산다" (ㄹ탈락)
  * - Closed stem: append "는다".
  *   "먹" -> "먹는다"
  * - Open stem: insert ㄴ as jongseong, then append "다".
@@ -98,7 +109,9 @@ type PoliteFormal<Stem extends string> =
  */
 type PlainPresent<Stem extends string> =
   HasBatchim<Stem> extends true
-    ? `${Stem}는다`
+    ? LastJong<Stem> extends "ㄹ"
+      ? `${InsertFinalJong<Stem, "ㄴ">}다`
+      : `${Stem}는다`
     : `${InsertFinalJong<Stem, "ㄴ">}다`;
 
 /**
@@ -111,6 +124,24 @@ type PlainPresent<Stem extends string> =
  */
 type Conditional<Stem extends string> =
   HasBatchim<Stem> extends true ? `${Stem}으면` : `${Stem}면`;
+
+/**
+ * Conditional for irregular verbs (-(으)면).
+ *
+ * The epenthetic 으 triggers stem alternation in irregular verbs:
+ * - ㅂ: altStem + Conditional ("더우면")
+ * - ㄷ: altStem + Conditional ("들으면")
+ * - ㅅ: altStem + forced "으면" ("지으면") — no contraction
+ * - ㅎ: drop ㅎ from stem + "면" ("그러면")
+ */
+type IrregularConditional<V extends Verb> =
+  V extends IrregularVerb<"ㅅ">
+    ? `${V["altStem"]}으면`
+    : V extends IrregularVerb<"ㅎ">
+      ? Conditional<DropFinalJong<V["stem"]>>
+      : V extends IrregularVerb<IrregularType>
+        ? Conditional<V["altStem"]>
+        : never;
 
 /**
  * Conjugation rule table for 하다 verbs.
@@ -170,7 +201,11 @@ type ConjugationMap<V extends Verb, S extends string> = {
   평서_현재: V extends Adjective ? `${V["stem"]}다` : PlainPresent<S>;
   고: `${S}고`;
   아서: `${PresentVowelBase<V, S>}서`;
-  면: Conditional<S>;
+  면: V extends IrregularVerb<"ㅅ" | "ㅎ" | "ㅂ" | "ㄷ">
+    ? IrregularConditional<V>
+    : LastJong<S> extends "ㄹ"
+      ? `${S}면`
+      : Conditional<S>;
   지만: `${S}지만`;
 };
 

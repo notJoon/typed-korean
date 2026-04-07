@@ -27,6 +27,8 @@ export type 먹다 = RegularVerb & { stem: "먹" };
 export type 가다 = RegularVerb & { stem: "가" };
 export type 보다 = RegularVerb & { stem: "보" };
 export type 살다 = RegularVerb & { stem: "살" };
+export type 알다 = RegularVerb & { stem: "알" };
+export type 만들다 = RegularVerb & { stem: "만들" };
 export type 오다 = RegularVerb & { stem: "오" };
 export type 주다 = RegularVerb & { stem: "주" };
 export type 쓰다 = RegularVerb & { stem: "쓰" };
@@ -50,11 +52,13 @@ export type RegularVerbEntry =
 // ㅂ irregular verbs
 export type 덥다 = Adjective &
   IrregularVerb<"ㅂ"> & { stem: "덥"; altStem: "더우" };
-export type 춥다 = IrregularVerb<"ㅂ"> & { stem: "춥"; altStem: "추우" };
-export type 아름답다 = IrregularVerb<"ㅂ"> & {
-  stem: "아름답";
-  altStem: "아름다우";
-};
+export type 춥다 = Adjective &
+  IrregularVerb<"ㅂ"> & { stem: "춥"; altStem: "추우" };
+export type 아름답다 = Adjective &
+  IrregularVerb<"ㅂ"> & {
+    stem: "아름답";
+    altStem: "아름다우";
+  };
 
 // ㄷ irregular verbs
 export type 듣다 = IrregularVerb<"ㄷ"> & { stem: "듣"; altStem: "들" };
@@ -66,11 +70,14 @@ export type 낫다 = IrregularVerb<"ㅅ"> & { stem: "낫"; altStem: "나" };
 
 // 르 irregular verbs
 export type 모르다 = IrregularVerb<"르"> & { stem: "모르"; altStem: "몰" };
-export type 빠르다 = IrregularVerb<"르"> & { stem: "빠르"; altStem: "빨" };
+export type 빠르다 = Adjective &
+  IrregularVerb<"르"> & { stem: "빠르"; altStem: "빨" };
 
 // ㅎ irregular verbs
-export type 그렇다 = IrregularVerb<"ㅎ"> & { stem: "그렇"; altStem: "그래" };
-export type 어떻다 = IrregularVerb<"ㅎ"> & { stem: "어떻"; altStem: "어때" };
+export type 그렇다 = Adjective &
+  IrregularVerb<"ㅎ"> & { stem: "그렇"; altStem: "그래" };
+export type 어떻다 = Adjective &
+  IrregularVerb<"ㅎ"> & { stem: "어떻"; altStem: "어때" };
 
 // 하다-family verbs
 export type 공부하다 = 하다Verb & { prefix: "공부" };
