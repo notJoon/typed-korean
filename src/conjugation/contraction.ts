@@ -46,6 +46,8 @@ type ReplaceLastSyllableVowel<
  * | ㅡ_ㅓ  | ㅓ     | 쓰 + 어 -> 써     |
  * | ㅣ_ㅓ  | ㅕ     | 마시 + 어 -> 마셔  |
  * | ㅐ_ㅓ  | ㅐ     | 보내 + 어 -> 보내  |
+ * | ㅔ_ㅓ  | ㅔ     | 세 + 어 -> 세      |
+ * | ㅚ_ㅓ  | ㅙ     | 되 + 어 -> 돼      |
  */
 export type ContractionTable = {
   ㅏ_ㅏ: "ㅏ";
@@ -54,6 +56,8 @@ export type ContractionTable = {
   ㅡ_ㅓ: "ㅓ";
   ㅣ_ㅓ: "ㅕ";
   ㅐ_ㅓ: "ㅐ";
+  ㅔ_ㅓ: "ㅔ";
+  ㅚ_ㅓ: "ㅙ";
 };
 
 /**
