@@ -16,13 +16,12 @@ export type {
   LastChar,
 } from "./hangul-unicode/string-utils.js";
 
+export type { RegularVerb, Verb } from "./vocabulary/verb.js";
 export type {
   IrregularType,
   IrregularVerb,
-  RegularVerb,
-  Verb,
   하다Verb,
-} from "./vocabulary/verb.js";
+} from "./vocabulary/irregular.js";
 export type { Adjective } from "./vocabulary/adjective.js";
 export type { Noun, ProperNoun } from "./vocabulary/noun.js";
 export type {
