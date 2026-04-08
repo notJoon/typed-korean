@@ -45,10 +45,13 @@ export interface RegularVerb extends Verb {
  * | ㅅ   | ㅅ drops before vowels         | 짓다 -> 지어요     |
  * | ㅎ   | ㅎ drops before vowels         | 그렇다 -> 그래요   |
  * | 르   | 르 becomes ㄹ라/ㄹ러           | 모르다 -> 몰라요   |
- * | ㅡ   | ㅡ drops before vowels         | 쓰다 -> 써요       |
  * | 러   | 어 becomes 러                  | 이르다 -> 이르러요 |
+ *
+ * @note
+ * ㅡ-drop (쓰다→써요, 끄다→꺼요) is handled by the existing
+ * ContractionTable rule (ㅡ_ㅓ→ㅓ), so it is not listed here.
  */
-export type IrregularType = "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "ㅡ" | "러";
+export type IrregularType = "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "러";
 
 /**
  * Irregular verb (bulgyuchik dongsa, 불규칙 동사).

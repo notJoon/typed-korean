@@ -32,6 +32,7 @@ export type 만들다 = RegularVerb & { stem: "만들" };
 export type 오다 = RegularVerb & { stem: "오" };
 export type 주다 = RegularVerb & { stem: "주" };
 export type 쓰다 = RegularVerb & { stem: "쓰" };
+export type 끄다 = RegularVerb & { stem: "끄" };
 export type 마시다 = RegularVerb & { stem: "마시" };
 export type 읽다 = RegularVerb & { stem: "읽" };
 export type 잡다 = RegularVerb & { stem: "잡" };
