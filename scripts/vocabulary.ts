@@ -60,6 +60,10 @@ export const VERBS: readonly VocabEntry[] = [
   ["그렇", "ㅎ", "그래"],
   ["어떻", "ㅎ", "어때"],
 
+  // 러 irregular
+  ["이르", "러", "이르"],
+  ["푸르", "러", "푸르"],
+
   // 하다 verbs
   ["하", "하"],
 

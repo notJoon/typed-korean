@@ -185,6 +185,21 @@ type 르VowelConjugationMap<OrigStem extends string, AltStem extends string> = {
   아서: `${르PresentVowelBase<OrigStem, AltStem>}서`;
 };
 
+/** Present-tense vowel base for 러 irregular verbs. Always uses "러". */
+type 러PresentVowelBase<Stem extends string> =
+  `${Stem}${Compose<"ㄹ", "ㅓ", null>}`;
+
+/** Past-tense base for 러 irregular verbs. */
+type 러PastBase<Stem extends string> =
+  `${Stem}${Compose<"ㄹ", "ㅓ", "ㅆ">}`;
+
+/** Vowel-starting endings for 러 irregular verbs. */
+type 러VowelConjugationMap<Stem extends string> = {
+  해요체: `${러PresentVowelBase<Stem>}요`;
+  과거_평서: `${러PastBase<Stem>}다`;
+  아서: `${러PresentVowelBase<Stem>}서`;
+};
+
 /**
  * Conjugation rule table mapping each {@link EndingType} to its result.
  *
@@ -254,7 +269,13 @@ export type Conjugate<V extends Verb, F extends EndingType> = V extends 하다Ve
         ? 르VowelConjugationMap<V["stem"], V["altStem"]>[F]
         : never
       : ConjugationMap<V, V["stem"]>[F & keyof ConjugationMap<V, V["stem"]>]
-    : EffectiveStem<V, F> extends infer S extends string
+    : V extends IrregularVerb<"러">
+      ? F extends VowelStartingEnding
+        ? F extends keyof 러VowelConjugationMap<V["stem"]>
+          ? 러VowelConjugationMap<V["stem"]>[F]
+          : never
+        : ConjugationMap<V, V["stem"]>[F & keyof ConjugationMap<V, V["stem"]>]
+      : EffectiveStem<V, F> extends infer S extends string
       ? F extends keyof ConjugationMap<V, S>
         ? ConjugationMap<V, S>[F]
         : never

@@ -80,6 +80,11 @@ export type 그렇다 = Adjective &
 export type 어떻다 = Adjective &
   IrregularVerb<"ㅎ"> & { stem: "어떻"; altStem: "어때" };
 
+// 러 irregular verbs
+export type 이르다 = IrregularVerb<"러"> & { stem: "이르"; altStem: "이르" };
+export type 푸르다 = Adjective &
+  IrregularVerb<"러"> & { stem: "푸르"; altStem: "푸르" };
+
 // 하다-family verbs
 export type 공부하다 = 하다Verb & { prefix: "공부" };
 export type 운동하다 = 하다Verb & { prefix: "운동" };

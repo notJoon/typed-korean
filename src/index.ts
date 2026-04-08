@@ -52,6 +52,8 @@ export type {
   주다,
   짓다,
   춥다,
+  이르다,
+  푸르다,
   운동하다,
 } from "./vocabulary/entries.js";
 

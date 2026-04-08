@@ -253,6 +253,12 @@ function collectNeededKeys(): Set<string> {
       add(cho, jung, null); // ㅎ drop → open syllable (러, 떠)
     }
 
+    // 러 irregular: stem + 러/렀
+    if (irregType === "러") {
+      add("ㄹ", "ㅓ", null); // 러
+      add("ㄹ", "ㅓ", "ㅆ"); // 렀
+    }
+
     // 르 irregular: altStem + 라/러 and + 랐/렀
     if (irregType === "르" && stem.length >= 2) {
       const secondToLastChar = stem.at(-2)!;
