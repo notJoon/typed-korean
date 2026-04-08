@@ -26,7 +26,7 @@ type _RegularVerbNoIrregular = Expect<
   Equal<RegularVerb["irregularType"], undefined>
 >;
 type _IrregularType = Expect<
-  Equal<IrregularType, "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "ㅡ" | "러">
+  Equal<IrregularType, "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "러">
 >;
 type _IrregularVerb = Expect<Equal<IrregularVerb<"ㅂ">["irregularType"], "ㅂ">>;
 type _하다Verb = Expect<Equal<하다Verb["stem"], "하">>;
