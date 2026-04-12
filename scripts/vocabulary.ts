@@ -76,3 +76,25 @@ export const VERBS: readonly VocabEntry[] = [
   // Adjectives (ㅂ irregular)
   ["가깝", "ㅂ", "가까우"],
 ];
+
+/**
+ * Noun list used as input for codegen.
+ *
+ * The last character of each noun is added to JamoTable so that
+ * `LastJong` (used by 으로/로 particle selection) can decompose it.
+ * Nouns whose particles only need `HasBatchim` (OpenSyllable-based)
+ * don't strictly need to be here, but are included for completeness.
+ */
+export const NOUNS: readonly string[] = [
+  "밥",
+  "사과",
+  "서울",
+  "부산",
+  "제주",
+  "학교",
+  "나",
+  "친구",
+  "집",
+  "닭",
+  "흙",
+];

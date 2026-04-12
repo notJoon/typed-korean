@@ -17,7 +17,7 @@
 import { writeFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { VERBS } from "./vocabulary.js";
+import { NOUNS, VERBS } from "./vocabulary.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -307,9 +307,10 @@ function genOpenSyllable(): string[] {
 /**
  * Collect the set of characters that need JamoTable entries.
  *
- * Only verb/adjective stems and their altStems contribute — their last
+ * Verb/adjective stems and their altStems contribute — their last
  * characters are the ones the conjugation engine will decompose.
- * Nouns only need `HasBatchim`, which is handled by `OpenSyllable`.
+ * Noun last characters are also included so that `LastJong` can
+ * decompose them for particle selection (e.g. 으로/로 ㄹ-exception).
  */
 function collectJamoChars(): Set<string> {
   const chars = new Set<string>();
@@ -322,6 +323,9 @@ function collectJamoChars(): Set<string> {
     if (irregType === "르" && stem.length >= 2) {
       chars.add(stem.at(-2)!);
     }
+  }
+  for (const noun of NOUNS) {
+    chars.add(noun.at(-1)!);
   }
   return chars;
 }
