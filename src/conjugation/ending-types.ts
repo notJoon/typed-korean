@@ -64,3 +64,9 @@ export type ConsonantStartingEnding =
   | "고"
   | "면"
   | "지만";
+
+/**
+ * Connective endings (yeongyeol eomi, 연결 어미) — endings that join clauses.
+ * Used by `ConnectiveVerbPhrase` to restrict accepted endings.
+ */
+export type ConnectiveEnding = "고" | "아서" | "면" | "지만";

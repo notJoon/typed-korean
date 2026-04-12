@@ -74,11 +74,7 @@ export type 과와<W extends string> = SelectAlternating<W, "with">;
  */
 export type 으로로<W extends string> = IfLiteral<
   W,
-  HasBatchim<W> extends false
-    ? "로"
-    : LastJong<W> extends "ㄹ"
-      ? "로"
-      : "으로",
+  HasBatchim<W> extends false ? "로" : LastJong<W> extends "ㄹ" ? "로" : "으로",
   never
 >;
 
