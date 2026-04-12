@@ -190,8 +190,7 @@ type 러PresentVowelBase<Stem extends string> =
   `${Stem}${Compose<"ㄹ", "ㅓ", null>}`;
 
 /** Past-tense base for 러 irregular verbs. */
-type 러PastBase<Stem extends string> =
-  `${Stem}${Compose<"ㄹ", "ㅓ", "ㅆ">}`;
+type 러PastBase<Stem extends string> = `${Stem}${Compose<"ㄹ", "ㅓ", "ㅆ">}`;
 
 /** Vowel-starting endings for 러 irregular verbs. */
 type 러VowelConjugationMap<Stem extends string> = {
@@ -276,7 +275,7 @@ export type Conjugate<V extends Verb, F extends EndingType> = V extends 하다Ve
           : never
         : ConjugationMap<V, V["stem"]>[F & keyof ConjugationMap<V, V["stem"]>]
       : EffectiveStem<V, F> extends infer S extends string
-      ? F extends keyof ConjugationMap<V, S>
-        ? ConjugationMap<V, S>[F]
-        : never
-      : never;
+        ? F extends keyof ConjugationMap<V, S>
+          ? ConjugationMap<V, S>[F]
+          : never
+        : never;
