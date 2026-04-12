@@ -35,6 +35,15 @@ export type Test<Actual, Expected> =
  */
 export type AssertAll<T extends true[]> = T;
 
+/**
+ * Negative assertion — verifies that `Actual` is NOT equal to `Rejected`.
+ * Surfaces `{ actual, rejected }` in the error when they match.
+ */
+export type TestNot<Actual, Rejected> =
+  Equal<Actual, Rejected> extends true
+    ? { error: "Type should differ"; actual: Actual; rejected: Rejected }
+    : true;
+
 import type { Conjugate } from "../src/conjugation/conjugate.js";
 import type { EndingType } from "../src/conjugation/ending-types.js";
 import type { Verb } from "../src/vocabulary/verb.js";

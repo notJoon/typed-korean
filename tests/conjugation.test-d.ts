@@ -43,7 +43,8 @@ import type {
   가다,
   공부하다,
 } from "../src/vocabulary/entries.js";
-import type { ConjugateTest } from "./test-utils.js";
+import type { Conjugate } from "../src/conjugation/conjugate.js";
+import type { AssertAll, ConjugateTest, TestNot } from "./test-utils.js";
 
 // =============================================================================
 // 1. 기본 규칙 동사 — 먹다, 가다
@@ -492,5 +493,46 @@ type _마시다 = ConjugateTest<
     ["과거_평서", "마셨다"],
     ["합쇼체", "마십니다"],
     ["고", "마시고"],
+  ]
+>;
+
+// =============================================================================
+// 10. 실패 케이스 — 잘못된 활용이 통과하지 않는지 검증
+// =============================================================================
+
+// 불규칙 어간(altStem)이 자음 어미에 적용되면 안 됨
+type _불규칙_자음어미 = AssertAll<
+  [
+    TestNot<Conjugate<덥다, "고">, "더우고">,
+    TestNot<Conjugate<듣다, "고">, "들고">,
+    TestNot<Conjugate<짓다, "고">, "지고">,
+    TestNot<Conjugate<그렇다, "고">, "그래고">,
+  ]
+>;
+
+// 모음조화가 뒤바뀌면 안 됨 (양성↔음성)
+type _모음조화_혼동 = AssertAll<
+  [
+    TestNot<Conjugate<먹다, "해요체">, "먹아요">,
+    TestNot<Conjugate<잡다, "해요체">, "잡어요">,
+    TestNot<Conjugate<오다, "해요체">, "워요">,
+  ]
+>;
+
+// 형용사에 동사식 평서_현재(는다/ㄴ다)가 적용되면 안 됨
+type _형용사_평서 = AssertAll<
+  [
+    TestNot<Conjugate<덥다, "평서_현재">, "덥는다">,
+    TestNot<Conjugate<아름답다, "평서_현재">, "아름답는다">,
+    TestNot<Conjugate<그렇다, "평서_현재">, "그렇는다">,
+  ]
+>;
+
+// ㄹ탈락이 일어나지 않아야 할 어미에서 탈락하면 안 됨
+type _ㄹ탈락_범위 = AssertAll<
+  [
+    TestNot<Conjugate<살다, "고">, "사고">,
+    TestNot<Conjugate<살다, "해요체">, "사아요">,
+    TestNot<Conjugate<알다, "지만">, "아지만">,
   ]
 >;
