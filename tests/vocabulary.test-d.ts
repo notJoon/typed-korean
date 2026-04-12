@@ -19,7 +19,9 @@ import type {
   Verb,
   하다Verb,
 } from "../src/vocabulary/verb.js";
-import type { Equal, Expect } from "./test-utils.js";
+import type { AssertAll, Equal, Expect, Test } from "./test-utils.js";
+
+// ---- 타입 구조 ----
 
 type _VerbShape = Expect<Equal<Verb["ending"], "다">>;
 type _RegularVerbNoIrregular = Expect<
@@ -36,16 +38,22 @@ type _Adjective = Expect<Equal<Adjective["partOfSpeech"], "adjective">>;
 type _Noun = Expect<Equal<Noun<"사과">["word"], "사과">>;
 type _ProperNoun = Expect<Equal<ProperNoun<"서울">["proper"], true>>;
 
-type _먹다 = Expect<Equal<먹다["stem"], "먹">>;
-type _가다 = Expect<Equal<가다["stem"], "가">>;
-type _보다 = Expect<Equal<보다["stem"], "보">>;
-type _살다 = Expect<Equal<살다["stem"], "살">>;
-type _오다 = Expect<Equal<오다["stem"], "오">>;
-type _주다 = Expect<Equal<주다["stem"], "주">>;
-type _쓰다 = Expect<Equal<쓰다["stem"], "쓰">>;
-type _마시다 = Expect<Equal<마시다["stem"], "마시">>;
-type _읽다 = Expect<Equal<읽다["stem"], "읽">>;
-type _잡다 = Expect<Equal<잡다["stem"], "잡">>;
+// ---- 어휘 항목 stem ----
+
+type _stems = AssertAll<
+  [
+    Test<먹다["stem"], "먹">,
+    Test<가다["stem"], "가">,
+    Test<보다["stem"], "보">,
+    Test<살다["stem"], "살">,
+    Test<오다["stem"], "오">,
+    Test<주다["stem"], "주">,
+    Test<쓰다["stem"], "쓰">,
+    Test<마시다["stem"], "마시">,
+    Test<읽다["stem"], "읽">,
+    Test<잡다["stem"], "잡">,
+  ]
+>;
 
 type _AllEntriesEnding = Expect<
   Equal<

@@ -6,23 +6,32 @@ import type {
   SecondToLastVowel,
 } from "../src/hangul-unicode/jamo.js";
 import type { DropLast, LastChar } from "../src/hangul-unicode/string-utils.js";
-import type { Equal, Expect } from "./test-utils.js";
+import type { AssertAll, Test } from "./test-utils.js";
 
-type _HasBatchim1 = Expect<Equal<HasBatchim<"밥">, true>>;
-type _HasBatchim2 = Expect<Equal<HasBatchim<"사과">, false>>;
+type _HasBatchim = AssertAll<
+  [Test<HasBatchim<"밥">, true>, Test<HasBatchim<"사과">, false>]
+>;
 
-type _LastVowel1 = Expect<Equal<LastVowel<"먹">, "ㅓ">>;
-type _LastVowel2 = Expect<Equal<LastVowel<"가">, "ㅏ">>;
+type _LastVowel = AssertAll<
+  [Test<LastVowel<"먹">, "ㅓ">, Test<LastVowel<"가">, "ㅏ">]
+>;
 
-type _Compose1 = Expect<Equal<Compose<"ㅇ", "ㅘ", null>, "와">>;
-type _Compose2 = Expect<Equal<Compose<"ㅆ", "ㅓ", null>, "써">>;
-type _Compose3 = Expect<Equal<Compose<"ㄱ", "ㅏ", "ㄴ">, "간">>;
+type _Compose = AssertAll<
+  [
+    Test<Compose<"ㅇ", "ㅘ", null>, "와">,
+    Test<Compose<"ㅆ", "ㅓ", null>, "써">,
+    Test<Compose<"ㄱ", "ㅏ", "ㄴ">, "간">,
+  ]
+>;
 
-type _LastChar = Expect<Equal<LastChar<"먹다">, "다">>;
-type _DropLast = Expect<Equal<DropLast<"먹다">, "먹">>;
+type _StringUtils = AssertAll<
+  [Test<LastChar<"먹다">, "다">, Test<DropLast<"먹다">, "먹">]
+>;
 
-type _LastJong = Expect<Equal<LastJong<"먹">, "ㄱ">>;
-type _SecondToLastVowel = Expect<Equal<SecondToLastVowel<"모르">, "ㅗ">>;
+type _Jamo = AssertAll<
+  [Test<LastJong<"먹">, "ㄱ">, Test<SecondToLastVowel<"모르">, "ㅗ">]
+>;
 
-type _LiteralGate1 = Expect<Equal<HasBatchim<string>, never>>;
-type _LiteralGate2 = Expect<Equal<LastVowel<string>, never>>;
+type _LiteralGate = AssertAll<
+  [Test<HasBatchim<string>, never>, Test<LastVowel<string>, never>]
+>;
