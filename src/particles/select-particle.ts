@@ -7,6 +7,7 @@
  */
 
 import type { HasBatchim, LastJong } from "../hangul-unicode/jamo.js";
+import type { IfLiteral } from "../hangul-unicode/string-utils.js";
 import type {
   AlternatingParticleMap,
   AlternatingParticleRole,
@@ -24,12 +25,13 @@ import type {
 export type SelectAlternating<
   W extends string,
   R extends AlternatingParticleRole,
-> =
+> = IfLiteral<
+  W,
   HasBatchim<W> extends true
     ? AlternatingParticleMap[R][0]
-    : HasBatchim<W> extends false
-      ? AlternatingParticleMap[R][1]
-      : never;
+    : AlternatingParticleMap[R][1],
+  never
+>;
 
 /**
  * Select 은 or 는 based on batchim.
@@ -70,14 +72,15 @@ export type 과와<W extends string> = SelectAlternating<W, "with">;
  * @example 으로로<"부산"> // "으로" (general batchim)
  * @example 으로로<"제주"> // "로" (no batchim)
  */
-export type 으로로<W extends string> =
+export type 으로로<W extends string> = IfLiteral<
+  W,
   HasBatchim<W> extends false
     ? "로"
     : LastJong<W> extends "ㄹ"
       ? "로"
-      : HasBatchim<W> extends true
-        ? "으로"
-        : never;
+      : "으로",
+  never
+>;
 
 /**
  * Unified particle selector — picks the correct particle form for any role.
