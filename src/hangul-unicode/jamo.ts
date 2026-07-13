@@ -1,5 +1,5 @@
 import type { ComposeTable } from "../generated/compose-table.gen.js";
-import type { JamoTable, OpenSyllable } from "../generated/jamo-table.gen.js";
+import type { JamoTable } from "../generated/jamo-table.gen.js";
 import type { DropLast, IfLiteral, LastChar } from "./string-utils.js";
 
 /**
@@ -28,17 +28,11 @@ type ComposeKey<
 /**
  * Determine whether the last syllable of `S` has batchim (jongseong).
  *
- * Uses `OpenSyllable` (all Hangul syllables without jongseong) so this works
- * for arbitrary Hangul nouns, not only vocabulary entries in `JamoTable`.
+ * Uses the exhaustive `JamoTable`, so non-Hangul literals return `never`.
  *
  * Returns:
  * - `true`  if the last syllable is closed (has jongseong)
  * - `false` if the last syllable is open (no jongseong)
- *
- * Known issue:
- * - Non-Hangul literals (e.g. "A") currently evaluate to `true`.
- *   This module intentionally avoids generating an exhaustive closed-syllable
- *   union (10,773 entries) to keep type footprint smaller.
  *
  * @example
  * type A = HasBatchim<"밥">;   // true
@@ -47,7 +41,11 @@ type ComposeKey<
  */
 export type HasBatchim<S extends string> = IfLiteral<
   S,
-  LastChar<S> extends OpenSyllable ? false : true,
+  LastChar<S> extends keyof JamoTable
+    ? JamoTable[LastChar<S>]["종"] extends null
+      ? false
+      : true
+    : never,
   never
 >;
 
@@ -122,7 +120,7 @@ export type DropFinalJong<S extends string> =
  * Compose a Hangul syllable from compatibility jamo.
  *
  * This is a type-level lookup into generated `ComposeTable`.
- * Returns `never` when the combination is not generated for current vocabulary.
+ * Returns `never` when the combination is outside the generated cross-product.
  *
  * @example
  * type A = Compose<"ㅇ", "ㅘ", null>; // "와"

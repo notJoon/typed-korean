@@ -1,5 +1,6 @@
 import type {
   Compose,
+  DecomposeLastChar,
   HasBatchim,
   LastJong,
   LastVowel,
@@ -9,7 +10,15 @@ import type { DropLast, LastChar } from "../src/hangul-unicode/string-utils.js";
 import type { AssertAll, Test } from "./test-utils.js";
 
 type _HasBatchim = AssertAll<
-  [Test<HasBatchim<"밥">, true>, Test<HasBatchim<"사과">, false>]
+  [
+    Test<HasBatchim<"밥">, true>,
+    Test<HasBatchim<"사과">, false>,
+    Test<HasBatchim<"A">, never>,
+  ]
+>;
+
+type _DecomposeLastChar = AssertAll<
+  [Test<DecomposeLastChar<"밟">, { 초: "ㅂ"; 중: "ㅏ"; 종: "ㄼ" }>]
 >;
 
 type _LastVowel = AssertAll<
