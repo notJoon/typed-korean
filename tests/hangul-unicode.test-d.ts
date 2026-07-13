@@ -23,14 +23,17 @@ type _HasBatchim = AssertAll<
 >;
 
 type _DecomposeLastChar = AssertAll<
-  [Test<DecomposeLastChar<"밟">, { 초: "ㅂ"; 중: "ㅏ"; 종: "ㄼ" }>]
+  [
+    Test<DecomposeLastChar<"밟">, { 초: "ㅂ"; 중: "ㅏ"; 종: "ㄼ" }>,
+    Test<DecomposeLastChar<"A">, never>,
+  ]
 >;
 
 type _ReverseJamoTables = AssertAll<
   [
-    Test<"먹" extends ChoTable["ㅁ"] ? true : false, true>,
-    Test<"먹" extends JungTable["ㅓ"] ? true : false, true>,
-    Test<"먹" extends JongTable["ㄱ"] ? true : false, true>,
+    Test<ChoTable["ㅁ"] extends `${string}먹${string}` ? true : false, true>,
+    Test<JungTable["ㅓ"] extends `${string}먹${string}` ? true : false, true>,
+    Test<JongTable["ㄱ"] extends `${string}먹${string}` ? true : false, true>,
   ]
 >;
 

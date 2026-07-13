@@ -6,8 +6,9 @@ import type {
 } from "../generated/jamo-table.gen.js";
 import type { DropLast, IfLiteral, LastChar } from "./string-utils.js";
 
+// C must be one character; longer strings could match across adjacent syllables.
 type FindContainingKey<T, C extends string> = {
-  [K in keyof T]: C extends T[K] ? K : never;
+  [K in keyof T]: T[K] extends `${string}${C}${string}` ? K : never;
 }[keyof T];
 
 /**
@@ -62,11 +63,13 @@ type ComposeKey<
 export type HasBatchim<S extends string> = IfLiteral<
   S,
   LastChar<S> extends infer C extends string
-    ? C extends JongTable["NULL"]
-      ? false
-      : [FindContainingKey<ChoTable, C>] extends [never]
+    ? FindContainingKey<JongTable, C> extends infer Jong extends string
+      ? [Jong] extends [never]
         ? never
-        : true
+        : Jong extends "NULL"
+          ? false
+          : true
+      : never
     : never,
   never
 >;

@@ -6,7 +6,7 @@ ComposeTable keys use the format `"초_중"` for open syllables (no jongseong) a
 
 ## Relationship between the tables
 
-`ChoTable`, `JungTable`, and `JongTable` map each compatibility jamo to the union of modern Hangul syllables that contain it. Together they cover all 11,172 syllables from U+AC00 through U+D7A3 without per-syllable object types. `JongTable` uses the string key `"NULL"` for syllables without jongseong, and `OpenSyllable` remains a derived compatibility export. `ComposeTable` contains the finite cross-product used by the conjugation engine.
+`ChoTable`, `JungTable`, and `JongTable` map each compatibility jamo to one string containing every modern Hangul syllable that has that jamo, ordered by codepoint. Together they cover all 11,172 syllables from U+AC00 through U+D7A3 without per-syllable union members. `JongTable` uses the string key `"NULL"` for syllables without jongseong, and `OpenSyllable` remains a derived compatibility export. `ComposeTable` contains the finite cross-product used by the conjugation engine.
 
 The reverse jamo tables are used to inspect syllables and determine batchim. `ComposeTable` assembles syllables after conjugation.
 
