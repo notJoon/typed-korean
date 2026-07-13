@@ -8,5 +8,3 @@ export type 의문사 = WhQuestion<
   "누가" | "언제" | "왜",
   `${NounWithParticle<ProperNoun<"서울">, "from">} ${VerbPhrase<먹다, "해요체">}`
 >;
-
-

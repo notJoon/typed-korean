@@ -20,7 +20,4 @@ export type ConditionalSentence<
   Result extends string,
 > = Join<Cond, Result>;
 
-export type ContrastSentence<
-  A extends string,
-  B extends string,
-> = Join<A, B>;
+export type ContrastSentence<A extends string, B extends string> = Join<A, B>;

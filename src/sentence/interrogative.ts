@@ -21,7 +21,6 @@ export type WhWord =
 
 export type Question<Body extends string> = `${Body}?`;
 
-export type WhQuestion<
-  QWord extends WhWord,
-  Body extends string,
-> = Question<Join<QWord, Body>>;
+export type WhQuestion<QWord extends WhWord, Body extends string> = Question<
+  Join<QWord, Body>
+>;

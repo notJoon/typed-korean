@@ -10,8 +10,7 @@
     "skipLibCheck": true,
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "baseUrl": "."
+    }
   },
   "include": ["src/**/*.ts", "tests/**/*.ts", "examples/**/*.ts"],
   "exclude": ["node_modules", "scripts"]

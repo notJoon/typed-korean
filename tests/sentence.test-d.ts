@@ -15,16 +15,8 @@ import type {
   ConnectedSentence,
   ContrastSentence,
 } from "../src/sentence/compound.js";
-import type {
-  Question,
-  WhQuestion,
-} from "../src/sentence/interrogative.js";
-import type {
-  먹다,
-  오다,
-  덥다,
-  공부하다,
-} from "../src/vocabulary/entries.js";
+import type { Question, WhQuestion } from "../src/sentence/interrogative.js";
+import type { 먹다, 오다, 덥다, 공부하다 } from "../src/vocabulary/entries.js";
 import type { AssertAll, Test, TestNot } from "./test-utils.js";
 
 type _statement_basic = AssertAll<
@@ -54,10 +46,7 @@ type _compound = AssertAll<
 type _question = AssertAll<
   [
     Test<Question<"밥을 먹었어요">, "밥을 먹었어요?">,
-    Test<
-      WhQuestion<"어디서", "밥을 먹었어요">,
-      "어디서 밥을 먹었어요?"
-    >,
+    Test<WhQuestion<"어디서", "밥을 먹었어요">, "어디서 밥을 먹었어요?">,
     Test<WhQuestion<"왜", "공부해요">, "왜 공부해요?">,
   ]
 >;
@@ -80,18 +69,12 @@ type _desc = DescriptiveStatement<
 
 type _connected = ConnectedSentence<
   `${NounWithParticle<Noun<"비">, "subject">} ${ConnectiveVerbPhrase<오다, "고">}`,
-  IntransitiveStatement<
-    NounWithParticle<Noun<"바람">, "subject">,
-    "분다"
-  >
+  IntransitiveStatement<NounWithParticle<Noun<"바람">, "subject">, "분다">
 >;
 
 type _conditional = ConditionalSentence<
   `${NounWithParticle<Noun<"비">, "subject">} ${ConnectiveVerbPhrase<오다, "면">}`,
-  IntransitiveStatement<
-    NounWithParticle<Noun<"우산">, "object">,
-    "쓴다"
-  >
+  IntransitiveStatement<NounWithParticle<Noun<"우산">, "object">, "쓴다">
 >;
 
 type _wh = WhQuestion<
@@ -143,10 +126,7 @@ type _compound_fail = AssertAll<
       "비가 오면우산을 쓴다"
     >,
     // 다른 연결어미는 동일 문자열이 아님
-    TestNot<
-      ContrastSentence<"덥지만", "참을 만하다">,
-      "덥고 참을 만하다"
-    >,
+    TestNot<ContrastSentence<"덥지만", "참을 만하다">, "덥고 참을 만하다">,
   ]
 >;
 
@@ -157,10 +137,7 @@ type _question_fail = AssertAll<
     // 물음표 누락 거부
     TestNot<Question<"밥을 먹었어요">, "밥을 먹었어요">,
     // 의문사 누락 거부
-    TestNot<
-      WhQuestion<"어디서", "밥을 먹었어요">,
-      "밥을 먹었어요?"
-    >,
+    TestNot<WhQuestion<"어디서", "밥을 먹었어요">, "밥을 먹었어요?">,
     // 의문사와 본문 사이 공백 누락 거부
     TestNot<WhQuestion<"왜", "공부해요">, "왜공부해요?">,
     // 물음표 두 번 거부
