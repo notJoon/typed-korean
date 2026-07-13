@@ -66,6 +66,31 @@ export type {
 } from "./conjugation/ending-types.js";
 export type { Conjugate, EffectiveStem } from "./conjugation/conjugate.js";
 export type {
+  NounPhrase,
+  NounWithParticle,
+} from "./phrase/noun-phrase.js";
+export type {
+  ConnectiveVerbPhrase,
+  VerbPhrase,
+} from "./phrase/verb-phrase.js";
+export type { AdjectivePhrase } from "./phrase/adjective-phrase.js";
+export type {
+  DescriptiveStatement,
+  IntransitiveStatement,
+  Statement,
+} from "./sentence/sentence.js";
+export type {
+  ConditionalSentence,
+  ConnectedSentence,
+  ContrastSentence,
+} from "./sentence/compound.js";
+export type {
+  Question,
+  WhQuestion,
+  WhWord,
+} from "./sentence/interrogative.js";
+
+export type {
   ApplyContraction,
   Contract,
   ContractionTable,
