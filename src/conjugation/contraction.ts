@@ -108,7 +108,7 @@ type ApplyContractionBase<
  * Apply vowel contraction to a stem and produce the contracted syllable(s).
  *
  * Pipeline:
- * 1. Look up the stem's last vowel from `JamoTable`.
+ * 1. Look up the stem's last vowel from the generated reverse jamo tables.
  * 2. Run {@link Contract} against the ending vowel.
  * 3. If a contraction exists, call `ReplaceLastSyllableVowel` to recompose
  *    the syllable with the new vowel.

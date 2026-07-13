@@ -1,5 +1,10 @@
 export type { ComposeTable } from "./generated/compose-table.gen.js";
-export type { JamoTable, OpenSyllable } from "./generated/jamo-table.gen.js";
+export type {
+  ChoTable,
+  JongTable,
+  JungTable,
+  OpenSyllable,
+} from "./generated/jamo-table.gen.js";
 
 export type {
   Compose,

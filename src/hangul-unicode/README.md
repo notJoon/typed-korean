@@ -14,8 +14,8 @@ This module provides the foundational Layer 0 primitives used by higher grammar 
 TypeScript types cannot perform Unicode codepoint arithmetic directly, so this layer uses code-generated lookup tables:
 
 - `src/generated/jamo-table.gen.ts`
-  - `OpenSyllable`: all open Hangul syllables (no final consonant)
-  - `JamoTable`: all 11,172 modern Hangul syllables mapped to compatibility jamo
+  - `ChoTable`, `JungTable`, `JongTable`: compatibility jamo mapped to syllable unions
+  - `OpenSyllable`: compatibility alias derived from `JongTable["NULL"]`
 - `src/generated/compose-table.gen.ts`
   - `ComposeTable`: cross-product for the five jongseong values inserted by conjugation
 

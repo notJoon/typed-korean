@@ -1,12 +1,20 @@
 import type { ComposeTable } from "../generated/compose-table.gen.js";
-import type { JamoTable } from "../generated/jamo-table.gen.js";
+import type {
+  ChoTable,
+  JongTable,
+  JungTable,
+} from "../generated/jamo-table.gen.js";
 import type { DropLast, IfLiteral, LastChar } from "./string-utils.js";
+
+type FindContainingKey<T, C extends string> = {
+  [K in keyof T]: C extends T[K] ? K : never;
+}[keyof T];
 
 /**
  * Decompose the last character of a string into its jamo components
- * (choseong, jungseong, jongseong) via `JamoTable` lookup.
+ * (choseong, jungseong, jongseong) via reverse-table lookup.
  *
- * Returns `never` if the last character is not in `JamoTable`.
+ * Returns `never` if the last character is not a modern Hangul syllable.
  *
  * @example
  * ```ts
@@ -15,8 +23,20 @@ import type { DropLast, IfLiteral, LastChar } from "./string-utils.js";
  * ```
  */
 export type DecomposeLastChar<S extends string> =
-  LastChar<S> extends keyof JamoTable
-    ? JamoTable[LastChar<S> & keyof JamoTable]
+  LastChar<S> extends infer C extends string
+    ? FindContainingKey<ChoTable, C> extends infer Cho extends string
+      ? [Cho] extends [never]
+        ? never
+        : FindContainingKey<JungTable, C> extends infer Jung extends string
+          ? FindContainingKey<JongTable, C> extends infer Jong extends string
+            ? {
+                초: Cho;
+                중: Jung;
+                종: Jong extends "NULL" ? null : Jong;
+              }
+            : never
+          : never
+      : never
     : never;
 
 type ComposeKey<
@@ -28,7 +48,7 @@ type ComposeKey<
 /**
  * Determine whether the last syllable of `S` has batchim (jongseong).
  *
- * Uses the exhaustive `JamoTable`, so non-Hangul literals return `never`.
+ * Uses the exhaustive reverse tables, so non-Hangul literals return `never`.
  *
  * Returns:
  * - `true`  if the last syllable is closed (has jongseong)
@@ -41,10 +61,12 @@ type ComposeKey<
  */
 export type HasBatchim<S extends string> = IfLiteral<
   S,
-  LastChar<S> extends keyof JamoTable
-    ? JamoTable[LastChar<S>]["종"] extends null
+  LastChar<S> extends infer C extends string
+    ? C extends JongTable["NULL"]
       ? false
-      : true
+      : [FindContainingKey<ChoTable, C>] extends [never]
+        ? never
+        : true
     : never,
   never
 >;
@@ -52,7 +74,7 @@ export type HasBatchim<S extends string> = IfLiteral<
 /**
  * Extract the jungseong (medial vowel) of the last syllable in `S`.
  *
- * The last character must exist in generated `JamoTable`; otherwise `never`.
+ * The last character must exist in the generated reverse tables; otherwise `never`.
  * Broad `string` is blocked by the literal gate.
  *
  * @example
@@ -70,7 +92,7 @@ export type LastVowel<S extends string> = IfLiteral<
  * Extract the jongseong (final consonant) of the last syllable in `S`.
  *
  * Returns `null` when the syllable is open (no batchim).
- * The last character must exist in generated `JamoTable`; otherwise `never`.
+ * The last character must exist in the generated reverse tables; otherwise `never`.
  *
  * @example
  * type A = LastJong<"먹">; // "ㄱ"
