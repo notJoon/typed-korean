@@ -42,7 +42,7 @@ npm run test       # run type-level tests
 npm run format     # format with prettier
 ```
 
-The codegen step generates complete modern-Hangul decomposition and composition tables under `src/generated/`. These files are committed to version control. Re-run `npm run codegen` after changing the Unicode coverage or compose jongseong configuration in `scripts/gen-jamo-table.ts`.
+The codegen step generates complete modern-Hangul decomposition and composition tables under `src/generated/`. These files are committed to version control. Re-run `npm run codegen` after changing the Unicode data in `src/hangul-unicode/runtime.ts` or the compose jongseong configuration in `scripts/gen-jamo-table.ts`.
 
 ## License
 

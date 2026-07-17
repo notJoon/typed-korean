@@ -1,16 +1,8 @@
-/**
- * !!! Test-only runtime helpers. !!!
- *
- * This project is primarily type-level, and these functions exist only to
- * validate Hangul decomposition/composition behavior in unit tests.
- */
-const S_BASE = 0xac00;
-const L_COUNT = 19;
-const V_COUNT = 21;
-const T_COUNT = 28;
-const N_COUNT = V_COUNT * T_COUNT;
+/** Shared runtime/codegen constants using Unicode's S/L/V/T/N notation. */
+export const S_BASE = 0xac00;
+export const S_END = 0xd7a3;
 
-const CHOSEONG = [
+export const CHOSEONG = [
   "ㄱ",
   "ㄲ",
   "ㄴ",
@@ -32,7 +24,7 @@ const CHOSEONG = [
   "ㅎ",
 ] as const;
 
-const JUNGSEONG = [
+export const JUNGSEONG = [
   "ㅏ",
   "ㅐ",
   "ㅑ",
@@ -56,7 +48,7 @@ const JUNGSEONG = [
   "ㅣ",
 ] as const;
 
-const JONGSEONG = [
+export const JONGSEONG = [
   null,
   "ㄱ",
   "ㄲ",
@@ -87,6 +79,12 @@ const JONGSEONG = [
   "ㅎ",
 ] as const;
 
+/** Unicode composition counts derived from the shared jamo lists. */
+export const L_COUNT = CHOSEONG.length;
+export const V_COUNT = JUNGSEONG.length;
+export const T_COUNT = JONGSEONG.length;
+export const N_COUNT = V_COUNT * T_COUNT;
+
 type Cho = (typeof CHOSEONG)[number];
 type Jung = (typeof JUNGSEONG)[number];
 type Jong = (typeof JONGSEONG)[number];
@@ -105,7 +103,7 @@ export function isHangulSyllable(ch: string): boolean {
   if (!isSingleCharacter(ch)) return false;
   const code = ch.codePointAt(0);
   if (code === undefined) return false;
-  return code >= S_BASE && code <= 0xd7a3;
+  return code >= S_BASE && code <= S_END;
 }
 
 export function decomposeSyllable(ch: string): DecomposedSyllable {

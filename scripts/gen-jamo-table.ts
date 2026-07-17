@@ -12,95 +12,19 @@
 import { writeFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  CHOSEONG,
+  JONGSEONG,
+  JUNGSEONG,
+  L_COUNT,
+  N_COUNT,
+  S_BASE,
+  S_END,
+  T_COUNT,
+  V_COUNT,
+} from "../src/hangul-unicode/runtime.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// Unicode constants for Hangul syllable block
-
-const S_BASE = 0xac00; // '가' (first syllable)
-const S_END = 0xd7a3; // '힣' (last syllable)
-const L_COUNT = 19; // choseong (initial consonant) count
-const V_COUNT = 21; // jungseong (medial vowel) count
-const T_COUNT = 28; // jongseong (final consonant) count, including none
-const N_COUNT = V_COUNT * T_COUNT; // 588
-
-/** Compatibility jamo — the user-facing forms mapped from algorithmic indices. */
-const CHOSEONG: string[] = [
-  "ㄱ",
-  "ㄲ",
-  "ㄴ",
-  "ㄷ",
-  "ㄸ",
-  "ㄹ",
-  "ㅁ",
-  "ㅂ",
-  "ㅃ",
-  "ㅅ",
-  "ㅆ",
-  "ㅇ",
-  "ㅈ",
-  "ㅉ",
-  "ㅊ",
-  "ㅋ",
-  "ㅌ",
-  "ㅍ",
-  "ㅎ",
-];
-
-const JUNGSEONG: string[] = [
-  "ㅏ",
-  "ㅐ",
-  "ㅑ",
-  "ㅒ",
-  "ㅓ",
-  "ㅔ",
-  "ㅕ",
-  "ㅖ",
-  "ㅗ",
-  "ㅘ",
-  "ㅙ",
-  "ㅚ",
-  "ㅛ",
-  "ㅜ",
-  "ㅝ",
-  "ㅞ",
-  "ㅟ",
-  "ㅠ",
-  "ㅡ",
-  "ㅢ",
-  "ㅣ",
-];
-
-const JONGSEONG: (string | null)[] = [
-  null,
-  "ㄱ",
-  "ㄲ",
-  "ㄳ",
-  "ㄴ",
-  "ㄵ",
-  "ㄶ",
-  "ㄷ",
-  "ㄹ",
-  "ㄺ",
-  "ㄻ",
-  "ㄼ",
-  "ㄽ",
-  "ㄾ",
-  "ㄿ",
-  "ㅀ",
-  "ㅁ",
-  "ㅂ",
-  "ㅄ",
-  "ㅅ",
-  "ㅆ",
-  "ㅇ",
-  "ㅈ",
-  "ㅊ",
-  "ㅋ",
-  "ㅌ",
-  "ㅍ",
-  "ㅎ",
-];
 
 // Add a compatibility jamo here if the conjugation engine inserts a new jongseong.
 const COMPOSE_JONG = [null, "ㄴ", "ㄹ", "ㅂ", "ㅆ"] as const;
