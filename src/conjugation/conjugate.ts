@@ -41,6 +41,9 @@ type 아어FromD<D extends Decomposed> =
  * For vowel-starting endings, irregular verbs switch to their `altStem`
  * (e.g. 덥 -> 더우). For all other endings, the base `stem` is always used.
  *
+ * `F` must be a single ending literal — this type does not distribute over
+ * ending unions ({@link Conjugate} distributes `F` before calling it).
+ *
  * @typeParam V - The verb type.
  * @typeParam F - The ending type being conjugated.
  *

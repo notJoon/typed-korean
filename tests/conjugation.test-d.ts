@@ -43,6 +43,7 @@ import type {
   가다,
   공부하다,
 } from "../src/vocabulary/entries.js";
+import type { RegularVerb } from "../src/vocabulary/verb.js";
 import type { Conjugate } from "../src/conjugation/conjugate.js";
 import type { AssertAll, ConjugateTest, Test, TestNot } from "./test-utils.js";
 
@@ -215,8 +216,8 @@ type _푸르다 = ConjugateTest<
 // 7. ContractionTable 보강 — ㅔ_ㅓ → ㅔ, ㅚ_ㅓ → ㅙ
 // =============================================================================
 
-type 쉬다 = { stem: "쉬"; ending: "다" };
-type 펴다 = { stem: "펴"; ending: "다" };
+type 쉬다 = RegularVerb & { stem: "쉬" };
+type 펴다 = RegularVerb & { stem: "펴" };
 
 type _개음절_어간 = AssertAll<
   [
