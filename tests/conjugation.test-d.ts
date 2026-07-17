@@ -44,7 +44,16 @@ import type {
   공부하다,
 } from "../src/vocabulary/entries.js";
 import type { Conjugate } from "../src/conjugation/conjugate.js";
-import type { AssertAll, ConjugateTest, TestNot } from "./test-utils.js";
+import type { AssertAll, ConjugateTest, Test, TestNot } from "./test-utils.js";
+
+type _verbClassDispatch = AssertAll<
+  [
+    Test<
+      Conjugate<공부하다 | 모르다 | 먹다, "해요체">,
+      "공부해요" | "몰라요" | "먹어요"
+    >,
+  ]
+>;
 
 // =============================================================================
 // 1. 기본 규칙 동사 — 먹다, 가다
