@@ -13,8 +13,15 @@ const build = new Job("ubuntu-latest")
   )
   .addStep({ name: "Install", run: "npm ci" })
   .addStep({ name: "Codegen", run: "npm run codegen" })
-  .addStep({ name: "Verify Generated Files", run: "git diff --exit-code" })
-  .addStep({ name: "Typecheck", run: "npm run typecheck" })
+  .addStep({
+    name: "Verify Generated Files",
+    run: "git diff --exit-code -- src/generated",
+  })
+  .addStep({
+    name: "Typecheck & Performance (500k limit)",
+    run: `set -o pipefail
+npm run typecheck -- --extendedDiagnostics | tee /dev/stderr | awk '/Instantiations:/ { found = 1; if ($2 !~ /^[0-9]+$/ || $2 > 500000) exit 1 } END { if (!found) exit 1 }'`,
+  })
   .addStep({ name: "Test", run: "npm test" })
   .addStep({ name: "Format Check", run: "npm run format:check" });
 
