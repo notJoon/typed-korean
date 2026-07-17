@@ -31,6 +31,9 @@ type _IrregularType = Expect<
   Equal<IrregularType, "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "러">
 >;
 type _IrregularVerb = Expect<Equal<IrregularVerb<"ㅂ">["irregularType"], "ㅂ">>;
+type _IrregularAltStem = Expect<
+  Equal<IrregularVerb<"ㅂ", "더우">["altStem"], "더우">
+>;
 type _하다Verb = Expect<Equal<하다Verb["stem"], "하">>;
 
 type _Adjective = Expect<Equal<Adjective["partOfSpeech"], "adjective">>;

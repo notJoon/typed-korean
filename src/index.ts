@@ -30,7 +30,6 @@ export type {
 export type { Adjective } from "./vocabulary/adjective.js";
 export type { Noun, ProperNoun } from "./vocabulary/noun.js";
 export type {
-  RegularVerbEntry,
   가깝다,
   가다,
   걷다,

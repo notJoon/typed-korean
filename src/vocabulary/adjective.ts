@@ -19,7 +19,7 @@ import type { Verb } from "./verb.js";
  * type 크다 = Adjective & RegularVerb & { stem: "크" };
  *
  * // Irregular adjective (ㅂ irregular is common in adjectives)
- * type 가깝다 = Adjective & IrregularVerb<"ㅂ"> & { stem: "가깝"; altStem: "가까우" };
+ * type 가깝다 = Adjective & IrregularVerb<"ㅂ", "가까우"> & { stem: "가깝" };
  * ```
  */
 export interface Adjective extends Verb {

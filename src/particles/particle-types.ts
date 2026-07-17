@@ -25,26 +25,9 @@ export interface AlternatingParticleMap {
 export type AlternatingParticleRole = keyof AlternatingParticleMap;
 
 /**
- * The 으로/로 particle pair — has a special ㄹ-batchim exception.
- *
- * The tuple is `[withBatchim, withoutBatchim]` for documentation purposes,
- * but the actual selection logic is 3-way (batchim → "으로", ㄹ batchim → "로",
- * no batchim → "로") and is implemented in `select-particle.ts`, not derived
- * from this tuple directly.
- *
- * - No batchim → 로
- * - ㄹ batchim → 로 (exception)
- * - Other batchim → 으로
+ * Roles that share the 으로/로 selection rule, including its ㄹ exception.
  */
-export interface EuroParticleMap {
-  instrument: ["으로", "로"];
-  direction: ["으로", "로"];
-}
-
-/**
- * Roles that use the 으로/로 particle.
- */
-export type EuroParticleRole = keyof EuroParticleMap;
+export type EuroParticleRole = "instrument" | "direction";
 
 /**
  * Fixed particles — form does not change regardless of batchim.

@@ -34,15 +34,19 @@ export type IrregularType = "ㅂ" | "ㄷ" | "ㅅ" | "ㅎ" | "르" | "러";
  * @example
  * ```ts
  * // ㅂ irregular: 덥 -> 더우 before vowel endings
- * type 덥다 = IrregularVerb<"ㅂ"> & { stem: "덥"; altStem: "더우" };
+ * type 덥다 = IrregularVerb<"ㅂ", "더우"> & { stem: "덥" };
  *
  * // ㄷ irregular: 듣 -> 들 before vowel endings
- * type 듣다 = IrregularVerb<"ㄷ"> & { stem: "듣"; altStem: "들" };
+ * type 듣다 = IrregularVerb<"ㄷ", "들"> & { stem: "듣" };
  * ```
  */
-export interface IrregularVerb<Type extends IrregularType> extends Verb {
+export interface IrregularVerb<
+  Type extends IrregularType,
+  Alt extends string = string,
+> extends Verb {
   irregularType: Type;
-  altStem: string;
+  /** Literal alternate-stem context consumed by vowel-starting conjugation. */
+  altStem: Alt;
 }
 
 /**
