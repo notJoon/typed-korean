@@ -1,10 +1,3 @@
-// TODO: Consider replacing VowelStartingEnding / ConsonantStartingEnding with
-// a metadata-based EndingRule union so that each ending carries its own
-// classification (e.g. `{ kind: "해요체"; start: "vowel"; ... }`). This would
-// let EffectiveStem derive the stem-selection policy from the ending itself
-// (`EndingStart<F> extends "vowel"`) instead of relying on a separate
-// classification type that must be kept in sync manually.
-
 /**
  * Conjugation ending types (eomi yuhyeong, 어미 유형) supported in Phase 2.
  *
@@ -21,15 +14,22 @@
  * | "면"         | Conditional "if" (-myeon)               | 먹으면, 가면    |
  * | "지만"       | Contrastive "but" (-jiman)              | 먹지만          |
  */
-export type EndingType =
-  | "해요체"
-  | "과거_평서"
-  | "합쇼체"
-  | "평서_현재"
-  | "고"
-  | "아서"
-  | "면"
-  | "지만";
+export type EndingType = keyof EndingRuleMap;
+
+/**
+ * Ending metadata threaded into stem selection and phrase constraints.
+ * Add an ending here so every derived ending classification stays in sync.
+ */
+export type EndingRuleMap = {
+  해요체: { start: "vowel"; connective: false };
+  과거_평서: { start: "vowel"; connective: false };
+  합쇼체: { start: "consonant"; connective: false };
+  평서_현재: { start: "consonant"; connective: false };
+  고: { start: "consonant"; connective: true };
+  아서: { start: "vowel"; connective: true };
+  면: { start: "consonant"; connective: true };
+  지만: { start: "consonant"; connective: true };
+};
 
 /**
  * Endings that begin with a vowel (moeum eomi, 모음 어미).
@@ -44,7 +44,9 @@ export type EndingType =
  * // Irregular: EffectiveStem<덥다, "해요체"> -> "더우" (altStem)
  * ```
  */
-export type VowelStartingEnding = "해요체" | "과거_평서" | "아서";
+export type VowelStartingEnding = {
+  [K in EndingType]: EndingRuleMap[K]["start"] extends "vowel" ? K : never;
+}[EndingType];
 
 /**
  * Endings that begin with a consonant (jaeum eomi, 자음 어미).
@@ -58,15 +60,14 @@ export type VowelStartingEnding = "해요체" | "과거_평서" | "아서";
  * // Irregular: Conjugate<덥다, "고"> -> "덥고" (base stem, not altStem)
  * ```
  */
-export type ConsonantStartingEnding =
-  | "합쇼체"
-  | "평서_현재"
-  | "고"
-  | "면"
-  | "지만";
+export type ConsonantStartingEnding = {
+  [K in EndingType]: EndingRuleMap[K]["start"] extends "consonant" ? K : never;
+}[EndingType];
 
 /**
  * Connective endings (yeongyeol eomi, 연결 어미) — endings that join clauses.
  * Used by `ConnectiveVerbPhrase` to restrict accepted endings.
  */
-export type ConnectiveEnding = "고" | "아서" | "면" | "지만";
+export type ConnectiveEnding = {
+  [K in EndingType]: EndingRuleMap[K]["connective"] extends true ? K : never;
+}[EndingType];

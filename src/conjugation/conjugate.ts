@@ -14,7 +14,7 @@ import type {
   InsertFinalJong,
 } from "./contraction.js";
 import type {
-  ConsonantStartingEnding,
+  EndingRuleMap,
   EndingType,
   VowelStartingEnding,
 } from "./ending-types.js";
@@ -53,13 +53,11 @@ type 아어FromD<D extends Decomposed> =
 export type EffectiveStem<
   V extends Verb,
   F extends EndingType,
-> = F extends VowelStartingEnding
+> = EndingRuleMap[F]["start"] extends "vowel"
   ? V extends IrregularVerb<IrregularType>
     ? V["altStem"]
     : V["stem"]
-  : F extends ConsonantStartingEnding
-    ? V["stem"]
-    : never;
+  : V["stem"];
 
 /**
  * Present-tense vowel base (e.g. "먹어", "가", "와").
