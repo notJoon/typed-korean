@@ -1,11 +1,17 @@
 import type {
   Compose,
   DecomposeLastChar,
+  DropFinalJong,
   HasBatchim,
   LastJong,
   LastVowel,
   SecondToLastVowel,
 } from "../src/hangul-unicode/jamo.js";
+import type {
+  ApplyContraction,
+  Contract,
+  InsertFinalJong,
+} from "../src/conjugation/contraction.js";
 import type {
   ChoTable,
   JongTable,
@@ -95,5 +101,21 @@ type _Jamo = AssertAll<
 >;
 
 type _LiteralGate = AssertAll<
-  [Test<HasBatchim<string>, never>, Test<LastVowel<string>, never>]
+  [
+    Test<LastChar<string>, never>,
+    Test<DropLast<string>, never>,
+    Test<DecomposeLastChar<string>, never>,
+    Test<DropFinalJong<string>, never>,
+    Test<Compose<string, "ㅏ", null>, never>,
+    Test<Compose<"ㄱ", string, null>, never>,
+    Test<Compose<"ㄱ", "ㅏ", string>, never>,
+    Test<Contract<string, "ㅏ">, never>,
+    Test<Contract<"ㅏ", string>, never>,
+    Test<ApplyContraction<string, "ㅏ">, never>,
+    Test<ApplyContraction<"가", string>, never>,
+    Test<InsertFinalJong<string, "ㄴ">, never>,
+    Test<InsertFinalJong<"가", string>, never>,
+    Test<HasBatchim<string>, never>,
+    Test<LastVowel<string>, never>,
+  ]
 >;

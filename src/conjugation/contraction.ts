@@ -1,5 +1,7 @@
+/** @packageDocumentation Root-exported APIs gate broad strings; internal helpers assume literals. */
+
 import type { Compose, DecomposeLastChar } from "../hangul-unicode/jamo.js";
-import type { DropLast } from "../hangul-unicode/string-utils.js";
+import type { DropLast, IfLiteral } from "../hangul-unicode/string-utils.js";
 
 /**
  * Replace the vowel (jungseong) of the last syllable in a stem while
@@ -63,7 +65,7 @@ export type ContractionTable = {
  * Look up the contraction result for a stem vowel + ending vowel pair.
  *
  * Returns the contracted vowel if a rule exists in {@link ContractionTable},
- * or `null` if no contraction applies.
+ * `null` if no contraction applies, or `never` for broad inputs.
  *
  * @example
  * ```ts
@@ -75,9 +77,13 @@ export type ContractionTable = {
 export type Contract<
   StemVowel extends string,
   EndingVowel extends string,
-> = `${StemVowel}_${EndingVowel}` extends keyof ContractionTable
-  ? ContractionTable[`${StemVowel}_${EndingVowel}`]
-  : null;
+> = IfLiteral<
+  StemVowel | EndingVowel,
+  `${StemVowel}_${EndingVowel}` extends keyof ContractionTable
+    ? ContractionTable[`${StemVowel}_${EndingVowel}`]
+    : null,
+  never
+>;
 
 /**
  * Core contraction logic shared by present and past tense.
@@ -119,6 +125,7 @@ export type ApplyContractionWithD<
  * 3. If a contraction exists, reuse it in `ReplaceLastSyllableVowel` to recompose
  *    the syllable with the new vowel.
  * 4. If no contraction, fall back to plain concatenation.
+ * Broad inputs return `never`.
  *
  * @typeParam Stem - The verb stem (must end in an open syllable).
  * @typeParam EndingVowel - The vowel jamo of the ending ("ㅏ" or "ㅓ").
@@ -130,13 +137,19 @@ export type ApplyContractionWithD<
  * type R3 = ApplyContraction<"쓰", "ㅓ">;  // "써" (ㅡ drop -> ㅓ)
  * ```
  */
-export type ApplyContraction<Stem extends string, EndingVowel extends string> =
+export type ApplyContraction<
+  Stem extends string,
+  EndingVowel extends string,
+> = IfLiteral<
+  Stem | EndingVowel,
   DecomposeLastChar<Stem> extends infer D extends {
     초: string;
     중: string;
   }
     ? ApplyContractionWithD<Stem, EndingVowel, D>
-    : `${Stem}${EndingVowel}`;
+    : `${Stem}${EndingVowel}`,
+  never
+>;
 
 /** Apply past contraction with a caller-provided syllable decomposition. */
 export type ApplyPastContractionWithD<
@@ -184,6 +197,7 @@ export type ApplyPastContraction<
  *
  * Used by 합쇼체 (ㅂ insertion: "가" -> "갑") and 평서_현재 (ㄴ insertion:
  * "가" -> "간"). The stem's last syllable must be open (no existing batchim).
+ * Broad stem or jongseong inputs return `never`.
  *
  * @typeParam Stem - The verb stem ending in an open syllable.
  * @typeParam Jong - The jongseong jamo to insert (e.g. `"ㅂ"`, `"ㄴ"`).
@@ -194,7 +208,16 @@ export type ApplyPastContraction<
  * type R2 = InsertFinalJong<"가", "ㄴ">;  // "간" (for 평서_현재: 간다)
  * ```
  */
-export type InsertFinalJong<Stem extends string, Jong extends string> =
-  DecomposeLastChar<Stem> extends infer D extends { 초: string; 중: string }
+export type InsertFinalJong<
+  Stem extends string,
+  Jong extends string,
+> = IfLiteral<
+  Stem | Jong,
+  DecomposeLastChar<Stem> extends infer D extends {
+    초: string;
+    중: string;
+  }
     ? `${DropLast<Stem>}${Compose<D["초"], D["중"], Jong>}`
-    : never;
+    : never,
+  never
+>;

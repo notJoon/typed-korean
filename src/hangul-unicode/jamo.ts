@@ -1,3 +1,5 @@
+/** @packageDocumentation Root-exported APIs gate broad strings; internal helpers assume literals. */
+
 import type { ComposeTable } from "../generated/compose-table.gen.js";
 import type {
   ChoTable,
@@ -15,7 +17,8 @@ type FindContainingKey<T, C extends string> = {
  * Decompose the last character of a string into its jamo components
  * (choseong, jungseong, jongseong) via reverse-table lookup.
  *
- * Returns `never` if the last character is not a modern Hangul syllable.
+ * Returns `never` if the input is broad or its last character is not a modern
+ * Hangul syllable.
  *
  * @example
  * ```ts
@@ -23,7 +26,8 @@ type FindContainingKey<T, C extends string> = {
  * type R2 = DecomposeLastChar<"가">;  // { 초: "ㄱ"; 중: "ㅏ"; 종: null }
  * ```
  */
-export type DecomposeLastChar<S extends string> =
+export type DecomposeLastChar<S extends string> = IfLiteral<
+  S,
   LastChar<S> extends infer C extends string
     ? FindContainingKey<ChoTable, C> extends infer Cho extends string
       ? [Cho] extends [never]
@@ -38,7 +42,9 @@ export type DecomposeLastChar<S extends string> =
             : never
           : never
       : never
-    : never;
+    : never,
+  never
+>;
 
 type ComposeKey<
   Cho extends string,
@@ -131,21 +137,26 @@ export type SecondToLastVowel<S extends string> = IfLiteral<
  * producing an open syllable.
  *
  * Used for ㅎ irregular conditional (ㅎ drop) and ㄹ탈락 processing.
+ * Broad `string` inputs return `never`.
  *
  * @example
  * type A = DropFinalJong<"그렇">; // "그러" (ㅎ removed)
  * type B = DropFinalJong<"살">;   // "사"  (ㄹ removed)
  */
-export type DropFinalJong<S extends string> =
+export type DropFinalJong<S extends string> = IfLiteral<
+  S,
   DecomposeLastChar<S> extends infer D extends { 초: string; 중: string }
     ? `${DropLast<S>}${Compose<D["초"], D["중"], null>}`
-    : never;
+    : never,
+  never
+>;
 
 /**
  * Compose a Hangul syllable from compatibility jamo.
  *
  * This is a type-level lookup into generated `ComposeTable`.
- * Returns `never` when the combination is outside the generated cross-product.
+ * Returns `never` for broad inputs or combinations outside the generated
+ * cross-product.
  *
  * @example
  * type A = Compose<"ㅇ", "ㅘ", null>; // "와"
@@ -156,7 +167,12 @@ export type Compose<
   Cho extends string,
   Jung extends string,
   Jong extends string | null,
-> =
-  ComposeKey<Cho, Jung, Jong> extends keyof ComposeTable
-    ? ComposeTable[ComposeKey<Cho, Jung, Jong>]
-    : never;
+> = IfLiteral<
+  Cho | Jung,
+  string extends Jong
+    ? never
+    : ComposeKey<Cho, Jung, Jong> extends keyof ComposeTable
+      ? ComposeTable[ComposeKey<Cho, Jung, Jong>]
+      : never,
+  never
+>;
