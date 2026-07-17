@@ -115,11 +115,11 @@ type PastBase<V extends Verb, Stem extends string> =
  *   "가" -> "갑" + "니다" -> "갑니다"
  */
 type PoliteFormal<Stem extends string> =
-  HasBatchim<Stem> extends true
-    ? LastJong<Stem> extends "ㄹ"
+  LastJong<Stem> extends infer Jong
+    ? Jong extends null | "ㄹ"
       ? `${InsertFinalJong<Stem, "ㅂ">}니다`
       : `${Stem}습니다`
-    : `${InsertFinalJong<Stem, "ㅂ">}니다`;
+    : never;
 
 /**
  * Plain present declarative (pyeongseo hyeonjae, 평서 현재): "는다" / "ㄴ다".
@@ -132,11 +132,11 @@ type PoliteFormal<Stem extends string> =
  *   "가" -> "간" + "다" -> "간다"
  */
 type PlainPresent<Stem extends string> =
-  HasBatchim<Stem> extends true
-    ? LastJong<Stem> extends "ㄹ"
+  LastJong<Stem> extends infer Jong
+    ? Jong extends null | "ㄹ"
       ? `${InsertFinalJong<Stem, "ㄴ">}다`
       : `${Stem}는다`
-    : `${InsertFinalJong<Stem, "ㄴ">}다`;
+    : never;
 
 /**
  * Conditional ending (jogeon, 조건): "으면" / "면".
@@ -267,7 +267,7 @@ type ConjugationMap<V extends Verb, S extends string> = {
  * The pipeline combines stem selection ({@link EffectiveStem}), vowel
  * harmony ({@link 아어}), contraction ({@link ApplyContraction}), and
  * syllable recomposition ({@link InsertFinalJong}).
- * The outer `V extends Verb` keeps class dispatch distributive for verb unions.
+ * The outer `V` and `F` conditionals keep verb and ending unions distributive.
  *
  * @typeParam V - The verb to conjugate.
  * @typeParam F - The target ending type.
@@ -293,11 +293,13 @@ type ConjugationMap<V extends Verb, S extends string> = {
  * ```
  */
 export type Conjugate<V extends Verb, F extends EndingType> = V extends Verb
-  ? VerbClass<V> extends "하다"
-    ? V extends 하다Verb
-      ? 하다ConjugationMap<V["prefix"]>[F]
-      : never
-    : EffectiveStem<V, F> extends infer S extends string
-      ? ConjugationMap<V, S>[F]
-      : never
+  ? F extends EndingType
+    ? VerbClass<V> extends "하다"
+      ? V extends 하다Verb
+        ? 하다ConjugationMap<V["prefix"]>[F]
+        : never
+      : EffectiveStem<V, F> extends infer S extends string
+        ? ConjugationMap<V, S>[F]
+        : never
+    : never
   : never;

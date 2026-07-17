@@ -52,6 +52,7 @@ type _verbClassDispatch = AssertAll<
       Conjugate<공부하다 | 모르다 | 먹다, "해요체">,
       "공부해요" | "몰라요" | "먹어요"
     >,
+    Test<Conjugate<덥다, "해요체" | "고">, "더워요" | "덥고">,
   ]
 >;
 
@@ -213,6 +214,17 @@ type _푸르다 = ConjugateTest<
 // =============================================================================
 // 7. ContractionTable 보강 — ㅔ_ㅓ → ㅔ, ㅚ_ㅓ → ㅙ
 // =============================================================================
+
+type 쉬다 = { stem: "쉬"; ending: "다" };
+type 펴다 = { stem: "펴"; ending: "다" };
+
+type _개음절_어간 = AssertAll<
+  [
+    Test<Conjugate<쉬다, "해요체">, "쉬어요">,
+    Test<Conjugate<펴다, "해요체">, "펴요">,
+    Test<Conjugate<펴다, "과거_평서">, "폈다">,
+  ]
+>;
 
 // 세다 (ㅔ_ㅓ → ㅔ: 모음 흡수)
 type _세다 = ConjugateTest<

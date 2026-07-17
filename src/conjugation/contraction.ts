@@ -46,6 +46,7 @@ type ReplaceLastSyllableVowel<
  * | ㅜ_ㅓ  | ㅝ     | 주 + 어 -> 줘     |
  * | ㅡ_ㅓ  | ㅓ     | 쓰 + 어 -> 써     |
  * | ㅣ_ㅓ  | ㅕ     | 마시 + 어 -> 마셔  |
+ * | ㅕ_ㅓ  | ㅕ     | 펴 + 어 -> 펴      |
  * | ㅐ_ㅓ  | ㅐ     | 보내 + 어 -> 보내  |
  * | ㅔ_ㅓ  | ㅔ     | 세 + 어 -> 세      |
  * | ㅚ_ㅓ  | ㅙ     | 되 + 어 -> 돼      |
@@ -56,6 +57,7 @@ export type ContractionTable = {
   ㅜ_ㅓ: "ㅝ";
   ㅡ_ㅓ: "ㅓ";
   ㅣ_ㅓ: "ㅕ";
+  ㅕ_ㅓ: "ㅕ";
   ㅐ_ㅓ: "ㅐ";
   ㅔ_ㅓ: "ㅔ";
   ㅚ_ㅓ: "ㅙ";
@@ -109,12 +111,18 @@ type ApplyContractionBase<
     ? ReplaceLastSyllableVowel<Stem, D, V, Jong>
     : Fallback;
 
-/** Apply present contraction with a caller-provided syllable decomposition. */
+/** Apply present contraction with caller context, appending 아/어 when no rule matches. */
 export type ApplyContractionWithD<
   Stem extends string,
   EndingVowel extends string,
   D extends { 초: string; 중: string },
-> = ApplyContractionBase<Stem, D, EndingVowel, null, `${Stem}${EndingVowel}`>;
+> = ApplyContractionBase<
+  Stem,
+  D,
+  EndingVowel,
+  null,
+  `${Stem}${EndingVowel extends "ㅏ" ? "아" : "어"}`
+>;
 
 /**
  * Apply vowel contraction to a stem and produce the contracted syllable(s).
