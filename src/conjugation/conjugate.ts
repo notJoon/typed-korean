@@ -1,5 +1,6 @@
 import type {
   Compose,
+  DecomposeLastChar,
   DropFinalJong,
   HasBatchim,
   LastJong,
@@ -8,8 +9,8 @@ import type { Adjective } from "../vocabulary/adjective.js";
 import type { IrregularType, IrregularVerb, Verb } from "../vocabulary/verb.js";
 import type { 하다Verb } from "../vocabulary/verb.js";
 import type {
-  ApplyContraction,
-  ApplyPastContraction,
+  ApplyContractionWithD,
+  ApplyPastContractionWithD,
   InsertFinalJong,
 } from "./contraction.js";
 import type {
@@ -17,7 +18,17 @@ import type {
   EndingType,
   VowelStartingEnding,
 } from "./ending-types.js";
-import type { 르아어Vowel, 아어, 아어Vowel } from "./vowel-harmony.js";
+import type { 르아어Vowel, 양성모음 } from "./vowel-harmony.js";
+
+/** Last-syllable context passed through one conjugation path without rescanning. */
+type Decomposed = { 초: string; 중: string; 종: string | null };
+
+type 아어VowelFromD<D extends Decomposed> = D["중"] extends 양성모음
+  ? "ㅏ"
+  : "ㅓ";
+
+type 아어FromD<D extends Decomposed> =
+  아어VowelFromD<D> extends "ㅏ" ? "아" : "어";
 
 /**
  * Choose the effective stem (silhyo eogan, 실효 어간) based on ending class.
@@ -57,13 +68,18 @@ export type EffectiveStem<
  *   "먹" + "어" -> "먹어"
  * - Open stem (no batchim): apply vowel contraction.
  *   "가" + "ㅏ" -> "가", "오" + "ㅏ" -> "와"
+ *
+ * The last syllable is decomposed once and threaded through harmony and
+ * contraction.
  */
 type PresentVowelBase<V extends Verb, Stem extends string> =
-  V extends IrregularVerb<"ㅅ">
-    ? `${Stem}${아어<Stem>}`
-    : HasBatchim<Stem> extends true
-      ? `${Stem}${아어<Stem>}`
-      : ApplyContraction<Stem, 아어Vowel<Stem>>;
+  DecomposeLastChar<Stem> extends infer D extends Decomposed
+    ? V extends IrregularVerb<"ㅅ">
+      ? `${Stem}${아어FromD<D>}`
+      : D["종"] extends null
+        ? ApplyContractionWithD<Stem, 아어VowelFromD<D>, D>
+        : `${Stem}${아어FromD<D>}`
+    : never;
 
 /**
  * Past-tense base (e.g. "먹었", "봤", "왔").
@@ -72,13 +88,18 @@ type PresentVowelBase<V extends Verb, Stem extends string> =
  *   "먹" + "었" -> "먹었"
  * - Open stem: apply contraction with ㅆ insertion.
  *   "보" + ㅏ + ㅆ -> "봤"
+ *
+ * The last syllable is decomposed once and threaded through harmony and
+ * contraction.
  */
 type PastBase<V extends Verb, Stem extends string> =
-  V extends IrregularVerb<"ㅅ">
-    ? `${Stem}${아어Vowel<Stem> extends "ㅏ" ? "았" : "었"}`
-    : HasBatchim<Stem> extends true
-      ? `${Stem}${아어Vowel<Stem> extends "ㅏ" ? "았" : "었"}`
-      : ApplyPastContraction<Stem, 아어Vowel<Stem>>;
+  DecomposeLastChar<Stem> extends infer D extends Decomposed
+    ? V extends IrregularVerb<"ㅅ">
+      ? `${Stem}${아어VowelFromD<D> extends "ㅏ" ? "았" : "었"}`
+      : D["종"] extends null
+        ? ApplyPastContractionWithD<Stem, 아어VowelFromD<D>, D>
+        : `${Stem}${아어VowelFromD<D> extends "ㅏ" ? "았" : "었"}`
+    : never;
 
 /**
  * Polite formal ending, hapsyoche (합쇼체): "습니다" / "ㅂ니다".
