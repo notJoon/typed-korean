@@ -51,20 +51,25 @@ import type { Verb } from "../src/vocabulary/verb.js";
 /**
  * Conjugation test helper — specify the verb once, then list `[ending, expected]` pairs.
  *
+ * Must be wrapped in {@link AssertAll} at the call site. Wrapping inside this
+ * alias would silently pass: a constraint written in a generic alias body is
+ * checked against the unresolved generic form and never re-checked when the
+ * alias is instantiated.
+ *
  * @example
- * type _먹다 = ConjugateTest<먹다, [
+ * type _먹다 = AssertAll<ConjugateTest<먹다, [
  *   ["해요체",    "먹어요"],
  *   ["과거_평서", "먹었다"],
- * ]>;
+ * ]>>;
  */
 export type ConjugateTest<
   V extends Verb,
   Cases extends [EndingType, string][],
-> = AssertAll<{
+> = {
   [K in keyof Cases]: Cases[K] extends [
     infer E extends EndingType,
     infer R extends string,
   ]
     ? Test<Conjugate<V, E>, R>
     : never;
-}>;
+};
