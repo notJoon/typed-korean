@@ -68,7 +68,11 @@ export type {
   EndingType,
   VowelStartingEnding,
 } from "./conjugation/ending-types.js";
-export type { Conjugate, EffectiveStem } from "./conjugation/conjugate.js";
+export type {
+  Conjugate,
+  EffectiveStem,
+  Honorific,
+} from "./conjugation/conjugate.js";
 export type { NounPhrase, NounWithParticle } from "./phrase/noun-phrase.js";
 export type { ConnectiveVerbPhrase, VerbPhrase } from "./phrase/verb-phrase.js";
 export type { AdjectivePhrase } from "./phrase/adjective-phrase.js";

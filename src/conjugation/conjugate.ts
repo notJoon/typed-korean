@@ -149,8 +149,11 @@ type PlainPresent<Stem extends string> =
  * - Open stem: append "면" directly.
  *   "가" -> "가면"
  */
-type Conditional<Stem extends string> =
-  HasBatchim<Stem> extends true ? `${Stem}으면` : `${Stem}면`;
+type Conditional<Stem extends string> = `${EuStem<Stem>}면`;
+
+/** Stem with epenthetic 으 inserted when it ends in a batchim. */
+type EuStem<Stem extends string> =
+  HasBatchim<Stem> extends true ? `${Stem}으` : Stem;
 
 /**
  * Conditional for irregular verbs (-(으)면).
@@ -306,3 +309,46 @@ export type Conjugate<V extends Verb, F extends EndingType> = V extends Verb
         : never
     : never
   : never;
+
+/**
+ * Stem carrying the honorific pre-final ending (jueche nopim, -(으)시-).
+ *
+ * 으 insertion follows the same rule as -(으)면, with one divergence: a
+ * ㄹ-final stem drops its ㄹ before 시 ("살" -> "사시") instead of keeping it
+ * ("살면").
+ */
+type HonorificStem<V extends Verb> = V extends 하다Verb
+  ? `${V["prefix"]}하시`
+  : V extends IrregularVerb<"ㅅ">
+    ? `${V["altStem"]}으시`
+    : V extends IrregularVerb<"ㅎ">
+      ? `${DropFinalJong<V["stem"]>}시`
+      : V extends IrregularVerb<"ㅂ" | "ㄷ">
+        ? `${EuStem<V["altStem"]>}시`
+        : LastJong<V["stem"]> extends "ㄹ"
+          ? `${DropFinalJong<V["stem"]>}시`
+          : `${EuStem<V["stem"]>}시`;
+
+/**
+ * Re-stems a verb with -(으)시- so it can re-enter {@link Conjugate}.
+ *
+ * The honorific stem always ends in the open syllable 시 and takes no further
+ * stem alternation, so every ending falls out of the existing pipeline without
+ * a dedicated rule table. `partOfSpeech` is carried over because 평서_현재
+ * still branches on it (더우시다 vs 먹으신다).
+ *
+ * @example
+ * ```ts
+ * type R1 = Conjugate<Honorific<먹다>, "해요체">;    // "먹으셔요"
+ * type R2 = Conjugate<Honorific<살다>, "평서_현재">; // "사신다"
+ * type R3 = Conjugate<Honorific<덥다>, "과거_평서">; // "더우셨다"
+ * ```
+ */
+export type Honorific<V extends Verb> = V extends Adjective
+  ? {
+      stem: HonorificStem<V>;
+      ending: "다";
+      honorific: true;
+      partOfSpeech: "adjective";
+    }
+  : { stem: HonorificStem<V>; ending: "다"; honorific: true };
