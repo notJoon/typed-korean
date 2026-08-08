@@ -5,7 +5,7 @@ import type { VerbPhrase } from "../src/phrase/verb-phrase.js";
 import type { IntransitiveStatement } from "../src/sentence/sentence.js";
 import type { WhQuestion } from "../src/sentence/interrogative.js";
 
-export type 왜_너는_공부해요 = WhQuestion<
+export type 너는_왜_공부해요 = WhQuestion<
   "왜",
   IntransitiveStatement<
     NounWithParticle<Noun<"너">, "topic">,

@@ -10,6 +10,7 @@ import type {
   IntransitiveStatement,
   Statement,
 } from "../src/sentence/sentence.js";
+import type { Render } from "../src/sentence/render.js";
 import type {
   ConditionalSentence,
   ConnectedSentence,
@@ -21,9 +22,9 @@ import type { AssertAll, Test, TestNot } from "./test-utils.js";
 
 type _statement_basic = AssertAll<
   [
-    Test<Statement<"나는", "밥을", "먹었다">, "나는 밥을 먹었다">,
-    Test<IntransitiveStatement<"비가", "온다">, "비가 온다">,
-    Test<DescriptiveStatement<"날씨가", "덥다">, "날씨가 덥다">,
+    Test<Render<Statement<"나는", "밥을", "먹었다">>, "나는 밥을 먹었다">,
+    Test<Render<IntransitiveStatement<"비가", "온다">>, "비가 온다">,
+    Test<Render<DescriptiveStatement<"날씨가", "덥다">>, "날씨가 덥다">,
   ]
 >;
 
@@ -46,35 +47,49 @@ type _compound = AssertAll<
 type _question = AssertAll<
   [
     Test<Question<"밥을 먹었어요">, "밥을 먹었어요?">,
-    Test<WhQuestion<"어디서", "밥을 먹었어요">, "어디서 밥을 먹었어요?">,
-    Test<WhQuestion<"왜", "공부해요">, "왜 공부해요?">,
+    Test<
+      WhQuestion<"어디서", { object: "밥을"; predicate: "먹었어요" }>,
+      "어디서 밥을 먹었어요?"
+    >,
+    Test<WhQuestion<"왜", { predicate: "공부해요" }>, "왜 공부해요?">,
   ]
 >;
 
-type _sov = Statement<
-  NounWithParticle<Noun<"나">, "topic">,
-  NounWithParticle<Noun<"밥">, "object">,
-  VerbPhrase<먹다, "과거_평서">
+type _sov = Render<
+  Statement<
+    NounWithParticle<Noun<"나">, "topic">,
+    NounWithParticle<Noun<"밥">, "object">,
+    VerbPhrase<먹다, "과거_평서">
+  >
 >;
 
-type _intrans = IntransitiveStatement<
-  NounWithParticle<Noun<"비">, "subject">,
-  VerbPhrase<오다, "해요체">
+type _intrans = Render<
+  IntransitiveStatement<
+    NounWithParticle<Noun<"비">, "subject">,
+    VerbPhrase<오다, "해요체">
+  >
 >;
 
-type _desc = DescriptiveStatement<
-  NounWithParticle<Noun<"날씨">, "subject">,
-  AdjectivePhrase<덥다, "해요체">
+type _desc = Render<
+  DescriptiveStatement<
+    NounWithParticle<Noun<"날씨">, "subject">,
+    AdjectivePhrase<덥다, "해요체">
+  >
 >;
 
 type _connected = ConnectedSentence<
   `${NounWithParticle<Noun<"비">, "subject">} ${ConnectiveVerbPhrase<오다, "고">}`,
-  IntransitiveStatement<NounWithParticle<Noun<"바람">, "subject">, "분다">
+  Render<
+    IntransitiveStatement<NounWithParticle<Noun<"바람">, "subject">, "분다">
+  >
 >;
 
 type _conditional = ConditionalSentence<
   `${NounWithParticle<Noun<"비">, "subject">} ${ConnectiveVerbPhrase<오다, "면">}`,
-  IntransitiveStatement<NounWithParticle<Noun<"우산">, "object">, "쓴다">
+  Render<{
+    object: NounWithParticle<Noun<"우산">, "object">;
+    predicate: "쓴다";
+  }>
 >;
 
 type _wh = WhQuestion<
@@ -92,7 +107,7 @@ type _integration = AssertAll<
     Test<_desc, "날씨가 더워요">,
     Test<_connected, "비가 오고 바람이 분다">,
     Test<_conditional, "비가 오면 우산을 쓴다">,
-    Test<_wh, "뭘 너는 공부해요?">,
+    Test<_wh, "너는 뭘 공부해요?">,
   ]
 >;
 
@@ -101,13 +116,13 @@ type _integration = AssertAll<
 type _statement_fail = AssertAll<
   [
     // SOV가 아닌 다른 어순(SVO 등) 거부
-    TestNot<Statement<"나는", "밥을", "먹었다">, "나는 먹었다 밥을">,
+    TestNot<Render<Statement<"나는", "밥을", "먹었다">>, "나는 먹었다 밥을">,
     // 공백 누락 거부
-    TestNot<Statement<"나는", "밥을", "먹었다">, "나는밥을먹었다">,
-    TestNot<IntransitiveStatement<"비가", "온다">, "비가온다">,
-    TestNot<DescriptiveStatement<"날씨가", "덥다">, "날씨가덥다">,
+    TestNot<Render<Statement<"나는", "밥을", "먹었다">>, "나는밥을먹었다">,
+    TestNot<Render<IntransitiveStatement<"비가", "온다">>, "비가온다">,
+    TestNot<Render<DescriptiveStatement<"날씨가", "덥다">>, "날씨가덥다">,
     // 서술어 누락 거부
-    TestNot<Statement<"나는", "밥을", "먹었다">, "나는 밥을">,
+    TestNot<Render<Statement<"나는", "밥을", "먹었다">>, "나는 밥을">,
   ]
 >;
 
@@ -137,9 +152,12 @@ type _question_fail = AssertAll<
     // 물음표 누락 거부
     TestNot<Question<"밥을 먹었어요">, "밥을 먹었어요">,
     // 의문사 누락 거부
-    TestNot<WhQuestion<"어디서", "밥을 먹었어요">, "밥을 먹었어요?">,
+    TestNot<
+      WhQuestion<"어디서", { object: "밥을"; predicate: "먹었어요" }>,
+      "밥을 먹었어요?"
+    >,
     // 의문사와 본문 사이 공백 누락 거부
-    TestNot<WhQuestion<"왜", "공부해요">, "왜공부해요?">,
+    TestNot<WhQuestion<"왜", { predicate: "공부해요" }>, "왜공부해요?">,
     // 물음표 두 번 거부
     TestNot<Question<"밥을 먹었어요">, "밥을 먹었어요??">,
   ]
@@ -160,6 +178,6 @@ type _integration_fail = AssertAll<
     // "면" 조건절이 다른 어미로 바뀌면 거부
     TestNot<_conditional, "비가 오지만 우산을 쓴다">,
     // 물음표 누락 거부
-    TestNot<_wh, "뭘 너는 공부해요">,
+    TestNot<_wh, "너는 뭘 공부해요">,
   ]
 >;

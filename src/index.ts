@@ -77,6 +77,8 @@ export type {
   IntransitiveStatement,
   Statement,
 } from "./sentence/sentence.js";
+export type { SentenceShape } from "./sentence/shape.js";
+export type { Render } from "./sentence/render.js";
 export type {
   ConditionalSentence,
   ConnectedSentence,
