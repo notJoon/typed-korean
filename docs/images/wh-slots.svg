@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 350" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2f9e6b"/>
+    </marker>
+    <marker id="ng" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d64545"/>
+    </marker>
+  </defs>
+  <style>
+    .mono { font-family: 'JetBrains Mono', D2Coding, Menlo, monospace; }
+    .sl { font-size: 15px; fill: #444; text-anchor: middle; }
+    .se { font-size: 11px; fill: #999; text-anchor: middle; }
+    .empty { fill: #fafafa; stroke: #c8c8c8; stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .filled { fill: #eef2f7; stroke: #6b7a90; stroke-width: 2; }
+    .free { fill: #e3f5ec; stroke: #2f9e6b; stroke-width: 2.5; stroke-dasharray: 6 4; }
+    .taken { fill: #fde8e8; stroke: #d64545; stroke-width: 2.5; }
+    .v { font-size: 19px; font-weight: 600; fill: #222; text-anchor: middle; dominant-baseline: central; }
+    .chip { font-size: 18px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
+    .row { font-size: 20px; font-weight: 700; dominant-baseline: central; }
+  </style>
+
+  <!-- 슬롯 이름 (x = 150 + i*118, 폭 110) -->
+  <text class="sl" x="205" y="20">주어</text><text class="mono se" x="205" y="35">subject</text>
+  <text class="sl" x="323" y="20">시간</text><text class="mono se" x="323" y="35">time</text>
+  <text class="sl" x="441" y="20">출발 장소</text><text class="mono se" x="441" y="35">locFrom</text>
+  <text class="sl" x="559" y="20">도착 장소</text><text class="mono se" x="559" y="35">locTo</text>
+  <text class="sl" x="677" y="20">목적어</text><text class="mono se" x="677" y="35">object</text>
+  <text class="sl" x="795" y="20">방식</text><text class="mono se" x="795" y="35">manner</text>
+  <text class="sl" x="913" y="20">이유</text><text class="mono se" x="913" y="35">cause</text>
+  <text class="sl" x="1031" y="20">서술어</text><text class="mono se" x="1031" y="35">predicate</text>
+
+  <!-- 1행: 빈 슬롯 → 성공 -->
+  <text class="row" x="20" y="71" fill="#2f9e6b">빈 슬롯</text>
+  <rect class="filled" x="150" y="45" width="110" height="52" rx="8"/><text class="v" x="205" y="71">비가</text>
+  <rect class="free" x="268" y="45" width="110" height="52" rx="8"/>
+  <rect class="empty" x="386" y="45" width="110" height="52" rx="8"/>
+  <rect class="empty" x="504" y="45" width="110" height="52" rx="8"/>
+  <rect class="empty" x="622" y="45" width="110" height="52" rx="8"/>
+  <rect class="empty" x="740" y="45" width="110" height="52" rx="8"/>
+  <rect class="empty" x="858" y="45" width="110" height="52" rx="8"/>
+  <rect class="filled" x="976" y="45" width="110" height="52" rx="8"/><text class="v" x="1031" y="71">와요</text>
+  <rect x="283" y="118" width="80" height="36" rx="18" fill="#2f9e6b"/><text class="chip" x="323" y="136">언제</text>
+  <line x1="323" y1="116" x2="323" y2="101" stroke="#2f9e6b" stroke-width="2.5" marker-end="url(#ok)"/>
+  <text x="400" y="142" font-size="20" font-weight="700" fill="#2f9e6b" class="mono">→ "비가 언제 와요?"</text>
+
+  <!-- 2행: 할당된 슬롯 → 충돌 -->
+  <text class="row" x="20" y="221" fill="#d64545">할당된 슬롯</text>
+  <rect class="empty" x="150" y="195" width="110" height="52" rx="8"/>
+  <rect class="taken" x="268" y="195" width="110" height="52" rx="8"/><text class="v" x="323" y="221">어제</text>
+  <rect class="empty" x="386" y="195" width="110" height="52" rx="8"/>
+  <rect class="empty" x="504" y="195" width="110" height="52" rx="8"/>
+  <rect class="empty" x="622" y="195" width="110" height="52" rx="8"/>
+  <rect class="empty" x="740" y="195" width="110" height="52" rx="8"/>
+  <rect class="empty" x="858" y="195" width="110" height="52" rx="8"/>
+  <rect class="filled" x="976" y="195" width="110" height="52" rx="8"/><text class="v" x="1031" y="221">왔어요</text>
+  <rect x="283" y="268" width="80" height="36" rx="18" fill="#d64545"/><text class="chip" x="323" y="286">언제</text>
+  <line x1="323" y1="266" x2="323" y2="251" stroke="#d64545" stroke-width="2.5" marker-end="url(#ng)"/>
+  <text x="400" y="292" font-size="17" font-weight="700" fill="#d64545" class="mono">→ { error: "slot conflict"; slot: "time"; existing: "어제" }</text>
+</svg>

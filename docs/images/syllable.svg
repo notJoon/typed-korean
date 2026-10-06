@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 440" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <style>
+    .glyph { font-size: 84px; font-weight: 700; fill: #222; text-anchor: middle; }
+    .jamo { font-size: 56px; font-weight: 600; text-anchor: middle; dominant-baseline: central; }
+    .cap { font-size: 22px; fill: #333; text-anchor: middle; }
+    .capb { font-size: 22px; font-weight: 700; text-anchor: middle; }
+    .leg { font-size: 22px; fill: #333; dominant-baseline: central; }
+    .legs { font-size: 17px; fill: #777; dominant-baseline: central; }
+    .cho { fill: #e6eefc; stroke: #3b6fd8; stroke-width: 3; }
+    .jung { fill: #fdf0e2; stroke: #d9822b; stroke-width: 3; }
+    .jong { fill: #e3f5ec; stroke: #2f9e6b; stroke-width: 3; }
+    .none { fill: #fafafa; stroke: #bbb; stroke-width: 2; stroke-dasharray: 8 6; }
+  </style>
+
+  <!-- 밥: 받침 있음 -->
+  <text class="glyph" x="230" y="95">밥</text>
+  <line x1="230" y1="112" x2="230" y2="145" stroke="#888" stroke-width="3" marker-end="url(#arr)"/>
+  <rect class="cho" x="120" y="155" width="110" height="110" rx="8"/>
+  <text class="jamo" x="175" y="210" fill="#3b6fd8">ㅂ</text>
+  <rect class="jung" x="230" y="155" width="110" height="110" rx="8"/>
+  <text class="jamo" x="285" y="210" fill="#d9822b">ㅏ</text>
+  <rect class="jong" x="120" y="265" width="220" height="110" rx="8"/>
+  <text class="jamo" x="230" y="320" fill="#2f9e6b">ㅂ</text>
+  <text class="capb" x="230" y="412" fill="#2f9e6b">받침 있음</text>
+  <text class="cap" x="230" y="436">밥은 · 밥이 · 밥을</text>
+
+  <!-- 나: 받침 없음 -->
+  <text class="glyph" x="600" y="95">나</text>
+  <line x1="600" y1="112" x2="600" y2="145" stroke="#888" stroke-width="3" marker-end="url(#arr)"/>
+  <rect class="cho" x="490" y="155" width="110" height="110" rx="8"/>
+  <text class="jamo" x="545" y="210" fill="#3b6fd8">ㄴ</text>
+  <rect class="jung" x="600" y="155" width="110" height="110" rx="8"/>
+  <text class="jamo" x="655" y="210" fill="#d9822b">ㅏ</text>
+  <rect class="none" x="490" y="265" width="220" height="110" rx="8"/>
+  <text class="legs" x="600" y="320" text-anchor="middle">(비어 있음)</text>
+  <text class="capb" x="600" y="412" fill="#888">받침 없음</text>
+  <text class="cap" x="600" y="436">나는 · 나가 · 나를</text>
+
+  <!-- 범례 -->
+  <rect class="cho" x="800" y="165" width="34" height="34" rx="5"/>
+  <text class="leg" x="850" y="174">초성</text>
+  <text class="legs" x="850" y="196">첫소리 (자음)</text>
+  <rect class="jung" x="800" y="235" width="34" height="34" rx="5"/>
+  <text class="leg" x="850" y="244">중성</text>
+  <text class="legs" x="850" y="266">가운뎃소리 (모음)</text>
+  <rect class="jong" x="800" y="305" width="34" height="34" rx="5"/>
+  <text class="leg" x="850" y="314">종성 = 받침</text>
+  <text class="legs" x="850" y="336">끝소리 (없을 수도 있음)</text>
+</svg>

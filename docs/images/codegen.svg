@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 290" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <style>
+    .mono { font-family: 'JetBrains Mono', D2Coding, Menlo, monospace; }
+    .hdr { font-size: 17px; font-weight: 700; text-anchor: middle; }
+    .name { font-size: 18px; font-weight: 700; fill: #222; text-anchor: middle; }
+    .key { font-size: 19px; font-weight: 700; text-anchor: middle; }
+    .code { font-size: 14px; fill: #444; text-anchor: middle; }
+    .txt { font-size: 15px; fill: #555; text-anchor: middle; }
+    .lbl { font-size: 14px; fill: #777; text-anchor: middle; }
+  </style>
+
+  <text class="hdr" x="160" y="30" fill="#8e44c9">빌드할 때 · 일반 TypeScript</text>
+  <text class="hdr" x="550" y="30" fill="#d9822b">생성되어 커밋되는 파일</text>
+  <text class="hdr" x="940" y="30" fill="#3b6fd8">컴파일할 때 · 타입</text>
+
+  <!-- A: 생성 스크립트 -->
+  <rect x="20" y="48" width="280" height="200" rx="12" fill="#f3e8fd" stroke="#8e44c9" stroke-width="2.5"/>
+  <text class="mono name" x="160" y="85">gen-jamo-table.ts</text>
+  <text class="key" x="160" y="130" fill="#8e44c9">산술 가능</text>
+  <text class="mono code" x="160" y="165">0xAC00 + (초×21 + 중)×28 + 종</text>
+  <text class="txt" x="160" y="205">11,172자를 순회하며</text>
+  <text class="txt" x="160" y="227">표를 만든다</text>
+
+  <!-- B: 생성 파일 -->
+  <rect x="410" y="48" width="280" height="200" rx="12" fill="#fdf0e2" stroke="#d9822b" stroke-width="2.5"/>
+  <text class="mono name" x="550" y="85">*.gen.ts</text>
+  <text class="key" x="550" y="125" fill="#d9822b">분해 테이블</text>
+  <text class="mono code" x="550" y="150">Cho / Jung / JongTable</text>
+  <text class="key" x="550" y="195" fill="#d9822b">조합 테이블</text>
+  <text class="mono code" x="550" y="220">ComposeTable (1,995개)</text>
+
+  <!-- C: 타입 -->
+  <rect x="800" y="48" width="280" height="200" rx="12" fill="#e6eefc" stroke="#3b6fd8" stroke-width="2.5"/>
+  <text class="name" x="940" y="85">타입 수준 코드</text>
+  <text class="key" x="940" y="130" fill="#3b6fd8">조회만 한다</text>
+  <text class="mono code" x="940" y="170">ComposeTable["ㄱ_ㅏ_ㅂ"]</text>
+  <text class="mono" x="940" y="205" font-size="20" font-weight="700" fill="#222" text-anchor="middle">→ "갑"</text>
+
+  <line x1="302" y1="148" x2="406" y2="148" stroke="#888" stroke-width="3" marker-end="url(#arr)"/>
+  <text class="mono lbl" x="355" y="176">codegen</text>
+  <line x1="692" y1="148" x2="796" y2="148" stroke="#888" stroke-width="3" marker-end="url(#arr)"/>
+  <text class="mono lbl" x="745" y="176">import type</text>
+
+  <text x="550" y="280" font-size="16" fill="#777" text-anchor="middle">계산은 빌드할 때 한 번, 타입 검사 때는 표를 꺼내 쓰기만</text>
+</svg>

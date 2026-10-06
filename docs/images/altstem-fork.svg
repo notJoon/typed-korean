@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 300" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="pa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8e44c9"/>
+    </marker>
+    <marker id="ba" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b6fd8"/>
+    </marker>
+  </defs>
+  <style>
+    .mono { font-family: 'JetBrains Mono', D2Coding, Menlo, monospace; }
+    .verb { font-size: 30px; font-weight: 700; fill: #222; text-anchor: middle; }
+    .field { font-size: 16px; text-anchor: middle; }
+    .q { font-size: 17px; fill: #333; text-anchor: middle; }
+    .stem { font-size: 22px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+    .res { font-size: 28px; font-weight: 700; fill: #222; text-anchor: middle; dominant-baseline: central; }
+    .lbl { font-size: 18px; font-weight: 700; }
+    .small { font-size: 15px; fill: #666; text-anchor: middle; }
+  </style>
+
+  <!-- 동사 -->
+  <rect x="20" y="90" width="240" height="120" rx="12" fill="#fff" stroke="#555" stroke-width="2.5"/>
+  <text class="verb" x="140" y="135">덥다</text>
+  <text class="mono field" x="140" y="166" fill="#3b6fd8">stem: "덥"</text>
+  <text class="mono field" x="140" y="190" fill="#8e44c9">altStem: "더우"</text>
+  <line x1="262" y1="150" x2="300" y2="150" stroke="#555" stroke-width="2.5"/>
+
+  <!-- 분기 -->
+  <polygon points="390,90 480,150 390,210 300,150" fill="#fff8e6" stroke="#c9a227" stroke-width="2.5"/>
+  <text class="q" x="390" y="145">어미가 모음으로</text>
+  <text class="q" x="390" y="167">시작하나?</text>
+
+  <!-- 예: altStem -->
+  <path d="M480 150 H510 V72 H556" fill="none" stroke="#8e44c9" stroke-width="2.5" marker-end="url(#pa)"/>
+  <text class="lbl" x="560" y="24" fill="#8e44c9">예 · 해요체 → altStem</text>
+  <rect x="560" y="38" width="220" height="68" rx="10" fill="#f3e8fd" stroke="#8e44c9" stroke-width="2.5"/>
+  <text class="mono stem" x="670" y="72" fill="#8e44c9">"더우" + 어요</text>
+  <line x1="782" y1="72" x2="836" y2="72" stroke="#8e44c9" stroke-width="2.5" marker-end="url(#pa)"/>
+  <rect x="840" y="38" width="240" height="68" rx="10" fill="#fff" stroke="#8e44c9" stroke-width="2.5"/>
+  <text class="res" x="960" y="64">더워요</text>
+  <text class="small" x="960" y="94">ㅜ + ㅓ → ㅝ 축약</text>
+
+  <!-- 아니오: stem -->
+  <path d="M480 150 H510 V228 H556" fill="none" stroke="#3b6fd8" stroke-width="2.5" marker-end="url(#ba)"/>
+  <rect x="560" y="194" width="220" height="68" rx="10" fill="#e6eefc" stroke="#3b6fd8" stroke-width="2.5"/>
+  <text class="mono stem" x="670" y="228" fill="#3b6fd8">"덥" + 고</text>
+  <line x1="782" y1="228" x2="836" y2="228" stroke="#3b6fd8" stroke-width="2.5" marker-end="url(#ba)"/>
+  <rect x="840" y="194" width="240" height="68" rx="10" fill="#fff" stroke="#3b6fd8" stroke-width="2.5"/>
+  <text class="res" x="960" y="228">덥고</text>
+  <text class="lbl" x="560" y="288" fill="#3b6fd8">아니오 · 고 → stem</text>
+</svg>

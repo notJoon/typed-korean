@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 300" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="x" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d64545"/>
+    </marker>
+  </defs>
+  <style>
+    .mono { font-family: 'JetBrains Mono', D2Coding, Menlo, monospace; }
+    .val { font-size: 22px; fill: #555; text-anchor: middle; }
+    .title { font-size: 24px; font-weight: 700; }
+    .sub { font-size: 16px; fill: #777; }
+    .note { font-size: 25px; dominant-baseline: central; }
+  </style>
+
+  <!-- string: 모든 문자열 -->
+  <ellipse cx="420" cy="150" rx="400" ry="135" fill="#f1f3f6" stroke="#6b7a90" stroke-width="2.5"/>
+  <text class="mono title" x="95" y="112" fill="#4a5568">string</text>
+  <text class="sub" x="95" y="138">모든 문자열</text>
+  <text class="mono val" x="200" y="200">"Alice"</text>
+  <text class="mono val" x="330" y="235">"Bob"</text>
+  <text class="mono val" x="320" y="90">"hello"</text>
+  <text class="mono val" x="350" y="160">"사과"</text>
+
+  <!-- "GET": 원소 하나 -->
+  <circle cx="560" cy="150" r="80" fill="#e6eefc" stroke="#3b6fd8" stroke-width="3"/>
+  <text class="mono" x="560" y="112" font-size="17" font-weight="700" fill="#3b6fd8" text-anchor="middle">"GET" 타입</text>
+  <text class="mono" x="560" y="165" font-size="24" font-weight="700" fill="#222" text-anchor="middle">"GET"</text>
+
+  <!-- "POST": 바깥 -->
+  <text class="mono" x="735" y="158" font-size="24" font-weight="700" fill="#d64545" text-anchor="middle">"POST"</text>
+  <line x1="690" y1="150" x2="646" y2="150" stroke="#d64545" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#x)"/>
+
+  <!-- 설명 -->
+  <text class="note" x="860" y="100" fill="#2f9e6b">✓ "GET" → 원 안</text>
+  <text class="note" x="860" y="150" fill="#d64545">✗ "POST" → 원 밖</text>
+  <text class="note" x="890" y="184" fill="#d64545" font-size="21">→ 컴파일 에러</text>
+  <text class="note" x="860" y="235" fill="#777" font-size="18">string 안에는 둘 다 있다</text>
+</svg>
