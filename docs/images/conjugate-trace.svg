@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 580" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="a8e44c9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8e44c9"/>
+    </marker>
+  </defs>
+  <style>
+    .mono { font-family: 'JetBrains Mono', D2Coding, Menlo, monospace; }
+    .head { font-size: 15px; font-weight: 700; }
+    .tag { font-size: 13px; font-weight: 700; text-anchor: end; }
+    .code { font-size: 14px; fill: #333; white-space: pre; }
+    .hot { fill: #111; font-weight: 700; }
+    .skip { fill: #9a9a9a; font-style: italic; }
+    .lbl { font-size: 14px; font-weight: 700; }
+    .res { font-size: 20px; font-weight: 700; fill: #222; text-anchor: middle; }
+  </style>
+  <rect x="10" y="10" width="575" height="132" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M10 18 a8 8 0 0 1 8 -8 H577 a8 8 0 0 1 8 8 V38 H10 z" fill="#f3e8fd"/>
+  <text class="mono head" x="22.0" y="29.0" fill="#8e44c9">Conjugate&lt;덥다, &quot;해요체&quot;&gt;</text>
+  <text class="mono code " x="24.0" y="62.0">VerbClass&lt;V&gt; extends &quot;하다&quot;</text>
+  <text class="mono code skip" x="40.9" y="84.0">? // ... 하다 전용 표</text>
+  <rect x="14" y="91" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="40.9" y="106.0">: EffectiveStem&lt;V, F&gt; extends infer S</text>
+  <rect x="14" y="113" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="57.7" y="128.0">? ConjugationMap&lt;V, S&gt;[F]</text>
+  <path d="M50 144 V179" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <rect x="10" y="182" width="575" height="110" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M10 190 a8 8 0 0 1 8 -8 H577 a8 8 0 0 1 8 8 V210 H10 z" fill="#f3e8fd"/>
+  <text class="mono head" x="22.0" y="201.0" fill="#8e44c9">EffectiveStem&lt;V, F&gt;</text>
+  <rect x="14" y="219" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="24.0" y="234.0">EndingRuleMap[F][&quot;start&quot;] extends &quot;vowel&quot;</text>
+  <rect x="14" y="241" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="40.9" y="256.0">? V extends IrregularVerb ? V[&quot;altStem&quot;]</text>
+  <text class="mono code skip" x="40.9" y="278.0">: // ...</text>
+  <path d="M50 294 V329" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="64.0" y="317.0" fill="#8e44c9">S = &quot;더우&quot;</text>
+  <rect x="10" y="332" width="575" height="88" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M10 340 a8 8 0 0 1 8 -8 H577 a8 8 0 0 1 8 8 V360 H10 z" fill="#f3e8fd"/>
+  <text class="mono head" x="22.0" y="351.0" fill="#8e44c9">ConjugationMap&lt;V, S&gt;</text>
+  <rect x="14" y="369" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="24.0" y="384.0">해요체: `${ClassVowelBase&lt;V, S, &quot;present&quot;&gt;}요`</text>
+  <text class="mono code skip" x="24.0" y="406.0">// ... 과거_평서 · 합쇼체 · 고 · 면 ...</text>
+  <path d="M50 422 V457" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <rect x="10" y="460" width="575" height="110" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M10 468 a8 8 0 0 1 8 -8 H577 a8 8 0 0 1 8 8 V488 H10 z" fill="#f3e8fd"/>
+  <text class="mono head" x="22.0" y="479.0" fill="#8e44c9">ClassVowelBase&lt;V, Stem, Tense&gt;</text>
+  <text class="mono code skip" x="24.0" y="512.0">VerbClass&lt;V&gt; extends &quot;르&quot; ? // ...</text>
+  <text class="mono code skip" x="24.0" y="534.0">: VerbClass&lt;V&gt; extends &quot;러&quot; ? // ...</text>
+  <rect x="14" y="541" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="24.0" y="556.0">: { present: PresentVowelBase&lt;V, Stem&gt; }[Tense]</text>
+  <rect x="615" y="10" width="575" height="154" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M615 18 a8 8 0 0 1 8 -8 H1182 a8 8 0 0 1 8 8 V38 H615 z" fill="#f3e8fd"/>
+  <text class="mono head" x="627.0" y="29.0" fill="#8e44c9">PresentVowelBase&lt;V, Stem&gt;</text>
+  <rect x="619" y="47" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="629.0" y="62.0">DecomposeLastChar&lt;Stem&gt; extends infer D</text>
+  <text class="mono code skip" x="645.9" y="84.0">? V extends IrregularVerb&lt;&quot;ㅅ&quot;&gt; ? // ...</text>
+  <rect x="619" y="91" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="645.9" y="106.0">: D[&quot;종&quot;] extends null</text>
+  <rect x="619" y="113" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="662.7" y="128.0">? ApplyContractionWithD&lt;Stem, 아어VowelFromD&lt;D&gt;, D&gt;</text>
+  <text class="mono code skip" x="662.7" y="150.0">: // ...</text>
+  <path d="M655 166 V201" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="669.0" y="189.0" fill="#8e44c9">D = { 초: &quot;ㅇ&quot;, 중: &quot;ㅜ&quot;, 종: null } · 모음 &quot;ㅓ&quot;</text>
+  <rect x="615" y="204" width="575" height="110" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M615 212 a8 8 0 0 1 8 -8 H1182 a8 8 0 0 1 8 8 V232 H615 z" fill="#f3e8fd"/>
+  <text class="mono head" x="627.0" y="223.0" fill="#8e44c9">ApplyContractionBase&lt;Stem, D, EndingVowel, …&gt;</text>
+  <rect x="619" y="241" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="629.0" y="256.0">Contract&lt;D[&quot;중&quot;], EndingVowel&gt; extends infer V</text>
+  <rect x="619" y="263" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="645.9" y="278.0">? ReplaceLastSyllableVowel&lt;Stem, D, V, Jong&gt;</text>
+  <text class="mono code skip" x="645.9" y="300.0">: // ...</text>
+  <path d="M655 316 V351" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="669.0" y="339.0" fill="#8e44c9">ContractionTable[&quot;ㅜ_ㅓ&quot;] = &quot;ㅝ&quot;</text>
+  <rect x="615" y="354" width="575" height="66" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M615 362 a8 8 0 0 1 8 -8 H1182 a8 8 0 0 1 8 8 V382 H615 z" fill="#f3e8fd"/>
+  <text class="mono head" x="627.0" y="373.0" fill="#8e44c9">ReplaceLastSyllableVowel&lt;Stem, D, NewVowel, …&gt;</text>
+  <rect x="619" y="391" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="629.0" y="406.0">`${DropLast&lt;Stem&gt;}${Compose&lt;D[&quot;초&quot;], NewVowel, NewJong&gt;}`</text>
+  <path d="M655 422 V457" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="669.0" y="445.0" fill="#8e44c9">&quot;더&quot; + &quot;워&quot;</text>
+  <rect x="615" y="460" width="575" height="56" rx="10" fill="#f3e8fd" stroke="#8e44c9" stroke-width="2.2"/>
+  <text class="mono res" x="902.5" y="496.0">해요체: `${&quot;더워&quot;}요`  →  &quot;더워요&quot;</text>
+  <path d="M587 515.0 H600.0 V24.0 H612" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+</svg>

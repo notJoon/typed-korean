@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" font-family="Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="ac96a12" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c96a12"/>
+    </marker>
+    <marker id="a8e44c9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8e44c9"/>
+    </marker>
+  </defs>
+  <style>
+    .mono { font-family: 'JetBrains Mono', D2Coding, Menlo, monospace; }
+    .head { font-size: 15px; font-weight: 700; }
+    .tag { font-size: 13px; font-weight: 700; text-anchor: end; }
+    .code { font-size: 14px; fill: #333; white-space: pre; }
+    .hot { fill: #111; font-weight: 700; }
+    .skip { fill: #9a9a9a; font-style: italic; }
+    .lbl { font-size: 14px; font-weight: 700; }
+    .res { font-size: 20px; font-weight: 700; fill: #222; text-anchor: middle; }
+  </style>
+  <rect x="10" y="10" width="575" height="110" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M10 18 a8 8 0 0 1 8 -8 H577 a8 8 0 0 1 8 8 V38 H10 z" fill="#fdeedd"/>
+  <text class="mono head" x="22.0" y="29.0" fill="#c96a12">Honorific&lt;덥다&gt;</text>
+  <text class="tag" x="573.0" y="29.0" fill="#c96a12">새로 추가</text>
+  <rect x="14" y="47" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="24.0" y="62.0">V extends Adjective</text>
+  <rect x="14" y="69" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="40.9" y="84.0">? { stem: HonorificStem&lt;V&gt;; partOfSpeech: &quot;adjective&quot;; … }</text>
+  <text class="mono code skip" x="40.9" y="106.0">: // ...</text>
+  <path d="M50 122 V151" fill="none" stroke="#c96a12" stroke-width="2.2" marker-end="url(#ac96a12)"/>
+  <rect x="10" y="154" width="575" height="154" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M10 162 a8 8 0 0 1 8 -8 H577 a8 8 0 0 1 8 8 V182 H10 z" fill="#fdeedd"/>
+  <text class="mono head" x="22.0" y="173.0" fill="#c96a12">HonorificStem&lt;V&gt;</text>
+  <text class="mono code skip" x="24.0" y="206.0">V extends 하다Verb ? // ...</text>
+  <text class="mono code skip" x="24.0" y="228.0">: V extends IrregularVerb&lt;&quot;ㅅ&quot; | &quot;ㅎ&quot;&gt; ? // ...</text>
+  <rect x="14" y="235" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="24.0" y="250.0">: V extends IrregularVerb&lt;&quot;ㅂ&quot; | &quot;ㄷ&quot;&gt;</text>
+  <rect x="14" y="257" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="40.9" y="272.0">? `${EuStem&lt;V[&quot;altStem&quot;]&gt;}시`</text>
+  <text class="mono code skip" x="40.9" y="294.0">: // ...</text>
+  <path d="M50 310 V339" fill="none" stroke="#c96a12" stroke-width="2.2" marker-end="url(#ac96a12)"/>
+  <text class="mono lbl" x="64.0" y="330.0" fill="#c96a12">Stem = &quot;더우&quot; (altStem)</text>
+  <rect x="10" y="342" width="575" height="110" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M10 350 a8 8 0 0 1 8 -8 H577 a8 8 0 0 1 8 8 V370 H10 z" fill="#fdeedd"/>
+  <text class="mono head" x="22.0" y="361.0" fill="#c96a12">EuStem&lt;Stem&gt;</text>
+  <rect x="14" y="379" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="24.0" y="394.0">HasBatchim&lt;Stem&gt; extends true</text>
+  <text class="mono code skip" x="40.9" y="416.0">? // ...</text>
+  <rect x="14" y="423" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="40.9" y="438.0">: Stem</text>
+  <path d="M50 454 V483" fill="none" stroke="#c96a12" stroke-width="2.2" marker-end="url(#ac96a12)"/>
+  <text class="mono lbl" x="64.0" y="474.0" fill="#c96a12">&quot;더우&quot; + &quot;시&quot;</text>
+  <rect x="10" y="486" width="575" height="56" rx="10" fill="#fdeedd" stroke="#c96a12" stroke-width="2.2"/>
+  <text class="mono res" x="297.5" y="522.0">Honorific&lt;덥다&gt;[&quot;stem&quot;] = &quot;더우시&quot;</text>
+  <rect x="615" y="10" width="575" height="110" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M615 18 a8 8 0 0 1 8 -8 H1182 a8 8 0 0 1 8 8 V38 H615 z" fill="#f3e8fd"/>
+  <text class="mono head" x="627.0" y="29.0" fill="#8e44c9">Conjugate&lt;Honorific&lt;덥다&gt;, &quot;과거_평서&quot;&gt;</text>
+  <text class="tag" x="1178.0" y="29.0" fill="#8e44c9">기존 코드 그대로</text>
+  <text class="mono code skip" x="629.0" y="62.0">VerbClass&lt;V&gt; extends &quot;하다&quot; ? // ...</text>
+  <rect x="619" y="69" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="629.0" y="84.0">: EffectiveStem&lt;V, F&gt; extends infer S</text>
+  <rect x="619" y="91" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="645.9" y="106.0">? ConjugationMap&lt;V, S&gt;[F]</text>
+  <path d="M655 122 V151" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="669.0" y="142.0" fill="#8e44c9">S = &quot;더우시&quot; (불규칙 아님 → stem)</text>
+  <rect x="615" y="154" width="575" height="88" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M615 162 a8 8 0 0 1 8 -8 H1182 a8 8 0 0 1 8 8 V182 H615 z" fill="#f3e8fd"/>
+  <text class="mono head" x="627.0" y="173.0" fill="#8e44c9">ConjugationMap&lt;V, S&gt;</text>
+  <rect x="619" y="191" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="629.0" y="206.0">과거_평서: `${ClassVowelBase&lt;V, S, &quot;past&quot;&gt;}다`</text>
+  <text class="mono code skip" x="629.0" y="228.0">// ... 해요체 · 합쇼체 · 고 · 면 ...</text>
+  <path d="M655 244 V273" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="669.0" y="264.0" fill="#8e44c9">ClassVowelBase → PastBase&lt;V, &quot;더우시&quot;&gt;</text>
+  <rect x="615" y="276" width="575" height="132" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M615 284 a8 8 0 0 1 8 -8 H1182 a8 8 0 0 1 8 8 V304 H615 z" fill="#f3e8fd"/>
+  <text class="mono head" x="627.0" y="295.0" fill="#8e44c9">PastBase&lt;V, Stem&gt;</text>
+  <rect x="619" y="313" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="629.0" y="328.0">DecomposeLastChar&lt;Stem&gt; extends infer D</text>
+  <text class="mono code skip" x="645.9" y="350.0">? V extends IrregularVerb&lt;&quot;ㅅ&quot;&gt; ? // ...</text>
+  <rect x="619" y="357" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="645.9" y="372.0">: D[&quot;종&quot;] extends null</text>
+  <rect x="619" y="379" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="662.7" y="394.0">? ApplyPastContractionWithD&lt;Stem, 아어VowelFromD&lt;D&gt;, D&gt;</text>
+  <path d="M655 410 V439" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="669.0" y="430.0" fill="#8e44c9">D = { 초: &quot;ㅅ&quot;, 중: &quot;ㅣ&quot;, 종: null } · 모음 &quot;ㅓ&quot;</text>
+  <rect x="615" y="442" width="575" height="88" rx="8" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+  <path d="M615 450 a8 8 0 0 1 8 -8 H1182 a8 8 0 0 1 8 8 V470 H615 z" fill="#f3e8fd"/>
+  <text class="mono head" x="627.0" y="461.0" fill="#8e44c9">ApplyContractionBase&lt;Stem, D, EndingVowel, &quot;ㅆ&quot;, …&gt;</text>
+  <rect x="619" y="479" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="629.0" y="494.0">Contract&lt;D[&quot;중&quot;], EndingVowel&gt; extends infer V</text>
+  <rect x="619" y="501" width="567" height="20" rx="3" fill="#fff1c1"/>
+  <text class="mono code hot" x="645.9" y="516.0">? ReplaceLastSyllableVowel&lt;Stem, D, V, Jong&gt;</text>
+  <path d="M655 532 V561" fill="none" stroke="#8e44c9" stroke-width="2.2" marker-end="url(#a8e44c9)"/>
+  <text class="mono lbl" x="669.0" y="552.0" fill="#8e44c9">&quot;ㅣ_ㅓ&quot; = &quot;ㅕ&quot;, 받침 ㅆ → &quot;더우&quot; + &quot;셨&quot;</text>
+  <rect x="615" y="564" width="575" height="56" rx="10" fill="#f3e8fd" stroke="#8e44c9" stroke-width="2.2"/>
+  <text class="mono res" x="902.5" y="600.0">과거_평서: `${&quot;더우셨&quot;}다`  →  &quot;더우셨다&quot;</text>
+  <path d="M587 514.0 H600.0 V24.0 H612" fill="none" stroke="#c96a12" stroke-width="2.2" marker-end="url(#ac96a12)"/>
+</svg>
